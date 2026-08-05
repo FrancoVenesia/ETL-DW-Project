@@ -1,0 +1,39 @@
+CREATE OR ALTER VIEW dbo.VW_PRD_Stock AS
+
+
+WITH cleaned AS (
+    SELECT 
+        REPLACE(STOCK_DATE, ':60', ':59') AS stock_date_cleaned,
+        PRODUCT_ID,
+        VARIATION
+    FROM dbo.STG_PRD_Stock
+),
+parsed AS (
+    SELECT 
+        PRODUCT_ID,
+        VARIATION,
+        CAST(LEFT(stock_date_cleaned, 10) AS DATE) AS fecha_date,
+        DATETIMEFROMPARTS(
+            YEAR(CAST(LEFT(stock_date_cleaned, 10) AS DATE)),
+            MONTH(CAST(LEFT(stock_date_cleaned, 10) AS DATE)),
+            DAY(CAST(LEFT(stock_date_cleaned, 10) AS DATE)),
+            CASE 
+                WHEN RIGHT(stock_date_cleaned, 4) = 'p.m.' AND CAST(SUBSTRING(stock_date_cleaned, 12, 2) AS INT) < 12 
+                    THEN CAST(SUBSTRING(stock_date_cleaned, 12, 2) AS INT) + 12
+                WHEN RIGHT(stock_date_cleaned, 4) = 'a.m.' AND CAST(SUBSTRING(stock_date_cleaned, 12, 2) AS INT) = 12
+                    THEN 0
+                ELSE CAST(SUBSTRING(stock_date_cleaned, 12, 2) AS INT)
+            END,
+            CAST(SUBSTRING(stock_date_cleaned, 15, 2) AS INT), 
+            CAST(SUBSTRING(stock_date_cleaned, 18, 2) AS INT), 
+            0
+        ) AS datetime_24h
+    FROM cleaned
+)
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY datetime_24h) AS id_stock,
+    fecha_date AS fecha,
+    CAST(datetime_24h AS TIME(0)) AS hora,
+    PRODUCT_ID AS id_producto,
+    VARIATION AS variacion
+FROM parsed
