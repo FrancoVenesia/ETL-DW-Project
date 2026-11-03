@@ -33,11 +33,6 @@ table dCliente
 		summarizeBy: none
 		sourceColumn: fecha_nacimiento
 
-		variation Variación
-			isDefault
-			relationship: 76300730-98d8-4c0c-a56e-fc3c56fc1841
-			defaultHierarchy: LocalDateTable_0a112122-3612-41f8-9675-f6bfa76b2d0d.'Jerarquía de fechas'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

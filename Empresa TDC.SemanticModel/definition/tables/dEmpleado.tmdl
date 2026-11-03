@@ -41,11 +41,6 @@ table dEmpleado
 		summarizeBy: none
 		sourceColumn: fecha_ingreso
 
-		variation Variación
-			isDefault
-			relationship: 38eac25a-2a44-46a7-a112-f0e409513eca
-			defaultHierarchy: LocalDateTable_e91322b1-4545-40d6-980b-5d9ded4e57d5.'Jerarquía de fechas'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -56,11 +51,6 @@ table dEmpleado
 		lineageTag: a6eaf123-f53e-494a-911b-d400c9ec3efb
 		summarizeBy: none
 		sourceColumn: fecha_nacimiento
-
-		variation Variación
-			isDefault
-			relationship: 1d3e9803-84a5-49f7-b7a5-f33c0dd1b7d6
-			defaultHierarchy: LocalDateTable_b7a9494b-0cdd-4088-8be1-1ca1e25739ac.'Jerarquía de fechas'
 
 		annotation SummarizationSetBy = Automatic
 
@@ -73,6 +63,15 @@ table dEmpleado
 		sourceColumn: nivel_educacion
 
 		annotation SummarizationSetBy = Automatic
+
+	column antiguedad_anios =
+			VAR Fin = MAX(fVenta[fecha])
+			RETURN IF(ISBLANK(dEmpleado[fecha_ingreso]), BLANK(), DATEDIFF(dEmpleado[fecha_ingreso], Fin, DAY) / 365.25)
+		formatString: 0.0
+		summarizeBy: average
+		lineageTag: 37a3b551-425c-47a4-bfd9-d4070ffde466
+
+		annotation SummarizationSetBy = User
 
 	partition dEmpleado = m
 		mode: import

@@ -5,7 +5,7 @@
     "x": 0,
     "y": 291.28738621586473,
     "z": 4000,
-    "height": 429.44083224967488,
+    "height": 429.4408322496749,
     "width": 359.53185955786734,
     "tabOrder": 4000
   },
@@ -207,6 +207,64 @@
             }
           ]
         }
+      },
+      {
+        "name": "c5003446c6414e331875",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dEmpleado"
+              }
+            },
+            "Property": "id_empleado"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "x",
+              "Entity": "dEmpleado",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "x"
+                              }
+                            },
+                            "Property": "id_empleado"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "-1L"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
       }
     ]
   }

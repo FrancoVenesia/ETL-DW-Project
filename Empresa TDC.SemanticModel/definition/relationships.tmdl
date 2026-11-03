@@ -1,18 +1,3 @@
-relationship 76300730-98d8-4c0c-a56e-fc3c56fc1841
-	joinOnDateBehavior: datePartOnly
-	fromColumn: dCliente.fecha_nacimiento
-	toColumn: LocalDateTable_0a112122-3612-41f8-9675-f6bfa76b2d0d.Date
-
-relationship 38eac25a-2a44-46a7-a112-f0e409513eca
-	joinOnDateBehavior: datePartOnly
-	fromColumn: dEmpleado.fecha_ingreso
-	toColumn: LocalDateTable_e91322b1-4545-40d6-980b-5d9ded4e57d5.Date
-
-relationship 1d3e9803-84a5-49f7-b7a5-f33c0dd1b7d6
-	joinOnDateBehavior: datePartOnly
-	fromColumn: dEmpleado.fecha_nacimiento
-	toColumn: LocalDateTable_b7a9494b-0cdd-4088-8be1-1ca1e25739ac.Date
-
 relationship bdbd674c-d03e-45c7-86f8-a8864623e2a2
 	fromColumn: dCliente.zipcode
 	toColumn: dGeografia.zipcode

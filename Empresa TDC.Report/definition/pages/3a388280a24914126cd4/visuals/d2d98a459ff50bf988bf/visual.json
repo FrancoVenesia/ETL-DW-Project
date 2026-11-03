@@ -3,14 +3,14 @@
   "name": "d2d98a459ff50bf988bf",
   "position": {
     "x": 640,
-    "y": 296.66666666666669,
+    "y": 296.6666666666667,
     "z": 3000,
     "height": 213.33333333333334,
     "width": 640,
     "tabOrder": 3000
   },
   "visual": {
-    "visualType": "lineStackedColumnComboChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,30 +23,13 @@
                       "Entity": "dTiempo"
                     }
                   },
-                  "Property": "fecha"
+                  "Property": "anio"
                 }
               },
-              "queryRef": "dTiempo.fecha",
-              "nativeQueryRef": "fecha",
+              "queryRef": "dTiempo.anio",
+              "nativeQueryRef": "Año",
+              "displayName": "Año",
               "active": true
-            }
-          ]
-        },
-        "Series": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dProducto"
-                    }
-                  },
-                  "Property": "es_diet"
-                }
-              },
-              "queryRef": "dProducto.es_diet",
-              "nativeQueryRef": "es_diet"
             }
           ]
         },
@@ -60,11 +43,11 @@
                       "Entity": "fVenta"
                     }
                   },
-                  "Property": "Litros vendidos"
+                  "Property": "% litros diet"
                 }
               },
-              "queryRef": "fVenta.Litros vendidos",
-              "nativeQueryRef": "Litros vendidos"
+              "queryRef": "fVenta.% litros diet",
+              "nativeQueryRef": "% litros diet"
             }
           ]
         }
@@ -79,23 +62,29 @@
                     "Entity": "dTiempo"
                   }
                 },
-                "Property": "fecha"
+                "Property": "anio"
               }
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "visualContainerObjects": {
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Analisis Diet'"
+                  "Value": "'Pregunta 13: participación de bebidas diet (% de los litros, por año)'"
                 }
               }
             }

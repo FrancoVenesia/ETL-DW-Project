@@ -10,7 +10,7 @@
     "tabOrder": 4000
   },
   "visual": {
-    "visualType": "lineStackedColumnComboChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,30 +23,13 @@
                       "Entity": "dTiempo"
                     }
                   },
-                  "Property": "fecha"
+                  "Property": "anio"
                 }
               },
-              "queryRef": "dTiempo.fecha",
-              "nativeQueryRef": "fecha",
+              "queryRef": "dTiempo.anio",
+              "nativeQueryRef": "Año",
+              "displayName": "Año",
               "active": true
-            }
-          ]
-        },
-        "Series": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dProducto"
-                    }
-                  },
-                  "Property": "tipo_envase"
-                }
-              },
-              "queryRef": "dProducto.tipo_envase",
-              "nativeQueryRef": "tipo_envase"
             }
           ]
         },
@@ -60,11 +43,11 @@
                       "Entity": "fVenta"
                     }
                   },
-                  "Property": "Litros vendidos"
+                  "Property": "% litros en lata"
                 }
               },
-              "queryRef": "fVenta.Litros vendidos",
-              "nativeQueryRef": "Litros vendidos"
+              "queryRef": "fVenta.% litros en lata",
+              "nativeQueryRef": "% litros en lata"
             }
           ]
         }
@@ -79,23 +62,29 @@
                     "Entity": "dTiempo"
                   }
                 },
-                "Property": "fecha"
+                "Property": "anio"
               }
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "visualContainerObjects": {
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Latas vs Botellas'"
+                  "Value": "'Pregunta 14: participación de latas (% de los litros, por año)'"
                 }
               }
             }

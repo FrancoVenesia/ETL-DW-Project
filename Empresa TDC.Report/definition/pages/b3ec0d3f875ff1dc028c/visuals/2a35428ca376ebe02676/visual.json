@@ -1,0 +1,148 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "2a35428ca376ebe02676",
+  "position": {
+    "x": 40,
+    "y": 20,
+    "z": 0,
+    "height": 680,
+    "width": 1200,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Dónde se responde cada pregunta del enunciado",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "1. Litros y productos por cliente en el tiempo: página 6"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "2. Compra promedio en litros por cliente en el tiempo: páginas 1 y 6"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "3. Ranking de productos por zona en el tiempo: páginas 3 y 7"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "4. Ventas del primer trimestre de 2011: página 8"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "5. Energy Drink en septiembre: página 9"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "6. Edad y tipo de bebida: página 4"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "7. Monto de adolescentes, adultos de 40-50 y clientes de 66 años: página 4"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "8 y 12. Edad y sexo del vendedor vs monto vendido: página 5"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "9. Los 5 vendedores más prometedores para 2011: página 10"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "10. Antigüedad vs productos vendidos: página 10"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "11. Clientes minoristas más valiosos (Pareto): página 4"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "13. Bebidas diet: página 2"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "14. Bebidas en lata: página 2"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "15. Productos a discontinuar: página 11"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "16. Stock por producto o rubro: página 12"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "17. Clientes más valiosos en el tiempo: páginas 1 y 4"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

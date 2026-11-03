@@ -2,44 +2,21 @@ table fVenta
 	lineageTag: 93b901ca-1231-4651-b65a-e0ea97e6ab63
 
 	measure 'Monto total vendido' = SUM(fVenta[monto_final])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Ventas
 		lineageTag: 6bcf11a0-7ecf-40f4-a1ab-68ddd024e74b
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Litros vendidos' = ```
-			SUM(fVenta[litros_vendidos])
-			
-			```
+	measure 'Litros vendidos' = SUM(fVenta[litros_vendidos])
+		formatString: #,0.00
+		displayFolder: Ventas
 		lineageTag: 2fb24656-a201-4d81-b481-42dfe93923f5
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Cantidad de clientes' = ```
-			DISTINCTCOUNT(fVenta[id_cliente])
-			
-			```
-		formatString: 0
-		lineageTag: 3f2477d8-0231-4b10-999b-5bfc1a42cd3c
-
-	measure 'Productos vendidos' = ```
-			SUM(fVenta[cantidad])
-			
-			```
-		formatString: 0
+	measure 'Productos vendidos' = SUM(fVenta[cantidad])
+		formatString: #,0
+		displayFolder: Ventas
 		lineageTag: f9e75e59-62c8-420e-8cca-fec372494eca
 
-	measure 'Litros promedio por cliente' =
-			
-			DIVIDE(
-			    [Litros vendidos],
-			    [Cantidad de clientes]
-			)
-		lineageTag: a691968c-5701-4a3f-a2dd-b41f3eaaf039
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure 'Monto acumulado vendido' =
-			
 			CALCULATE(
 			    [Monto total vendido],
 			    FILTER(
@@ -47,16 +24,57 @@ table fVenta
 			        dTiempo[fecha] <= MAX(dTiempo[fecha])
 			    )
 			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Ventas
 		lineageTag: 7252b88f-fa92-4a0f-8c3c-da3adb978d0d
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+	measure 'Monto año anterior' = CALCULATE([Monto total vendido], SAMEPERIODLASTYEAR(dTiempo[fecha]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Ventas
+		lineageTag: 67c1a5e0-b403-44aa-94c0-98ef9cd789d1
 
-	measure 'Cantidad de vendedores' = DISTINCTCOUNT(fVenta[id_empleado])
-		formatString: 0
-		lineageTag: a0522bdf-911e-4299-a9c2-c42bd71a72c8
+	measure 'Variación interanual %' = DIVIDE([Monto total vendido] - [Monto año anterior], [Monto año anterior])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Ventas
+		lineageTag: fa1c8e8e-0c1f-434c-b38c-6e7492e93427
+
+	measure 'Monto promedio mensual' =
+			-- Promedio de los años con ventas en el mes del contexto (para comparar meses)
+			AVERAGEX(VALUES(dTiempo[anio]), [Monto total vendido])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Ventas
+		lineageTag: 863d481e-b14d-48f5-a91f-61cfd30fa9b8
+
+	measure 'Índice estacional' =
+			-- 1 = mes promedio; mayor que 1 = mes por encima del promedio del año
+			DIVIDE(
+			    [Monto promedio mensual],
+			    CALCULATE(
+			        AVERAGEX(VALUES(dTiempo[mes]), [Monto promedio mensual]),
+			        REMOVEFILTERS(dTiempo[nombre_mes], dTiempo[mes])
+			    )
+			)
+		formatString: 0.00
+		displayFolder: Ventas
+		lineageTag: e99ebd9a-1134-4597-bc4a-f22637173fde
+
+	measure 'Cantidad de clientes' =
+			-- Sin el cliente desconocido (-1)
+			CALCULATE(DISTINCTCOUNT(fVenta[id_cliente]), fVenta[id_cliente] <> -1)
+		formatString: #,0
+		displayFolder: Clientes
+		lineageTag: 3f2477d8-0231-4b10-999b-5bfc1a42cd3c
+
+	measure 'Litros promedio por cliente' =
+			DIVIDE(
+			    [Litros vendidos],
+			    [Cantidad de clientes]
+			)
+		formatString: #,0.00
+		displayFolder: Clientes
+		lineageTag: a691968c-5701-4a3f-a2dd-b41f3eaaf039
 
 	measure 'Acumulado Pareto' =
-			
 			VAR TotalActual = [Monto total vendido]
 			RETURN
 			CALCULATE(
@@ -66,12 +84,11 @@ table fVenta
 			        [Monto total vendido] >= TotalActual
 			    )
 			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Clientes
 		lineageTag: e037f0cb-5308-4662-bfde-b4fd83c648d7
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure 'Porcentaje Pareto' =
-			
 			DIVIDE(
 			    [Acumulado Pareto],
 			    CALCULATE(
@@ -79,33 +96,151 @@ table fVenta
 			        ALLSELECTED(dCliente[nombre_completo])
 			    )
 			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Clientes
 		lineageTag: 59b7d7a7-2d38-4fa4-9723-e810633c1f6a
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+	measure 'Cantidad de vendedores' =
+			-- Sin el empleado desconocido (-1)
+			CALCULATE(DISTINCTCOUNT(fVenta[id_empleado]), fVenta[id_empleado] <> -1)
+		formatString: #,0
+		displayFolder: Empleados
+		lineageTag: a0522bdf-911e-4299-a9c2-c42bd71a72c8
+
+	measure '% litros diet' = DIVIDE(CALCULATE([Litros vendidos], dProducto[es_diet] = TRUE()), [Litros vendidos])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Productos
+		lineageTag: 746f26d3-2d86-4206-ae08-40499a5842c6
+
+	measure '% litros en lata' = DIVIDE(CALCULATE([Litros vendidos], dProducto[tipo_envase] = "CAN"), [Litros vendidos])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Productos
+		lineageTag: 07d9c655-b10c-4660-8118-7865788043ea
+
+	measure 'Participación en monto %' = DIVIDE([Monto total vendido], CALCULATE([Monto total vendido], ALLSELECTED(dProducto)))
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Productos
+		lineageTag: 1d8d4208-051b-4955-89e0-b2a39c7dd854
+
+	measure 'Variación último año completo %' =
+			-- Último año con los 12 meses cargados contra el anterior
+			VAR UltimoAnio = YEAR(CALCULATE(MAX(fVenta[fecha]), REMOVEFILTERS())) - 1
+			VAR Actual = CALCULATE([Monto total vendido], REMOVEFILTERS(dTiempo), dTiempo[anio] = UltimoAnio)
+			VAR Anterior = CALCULATE([Monto total vendido], REMOVEFILTERS(dTiempo), dTiempo[anio] = UltimoAnio - 1)
+			RETURN DIVIDE(Actual - Anterior, Anterior)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Productos
+		lineageTag: 18c81782-116c-4aa1-9c6c-4410f350737c
+
+	measure 'Ranking producto (litros)' =
+			IF(
+			    ISINSCOPE(dProducto[producto]),
+			    RANKX(ALLSELECTED(dProducto[producto]), [Litros vendidos], , DESC, DENSE)
+			)
+		formatString: 0
+		displayFolder: Productos
+		lineageTag: 566d1c5b-de7b-4035-92a8-f2f94798b1f3
+
+	measure 'Tendencia mensual' =
+			-- Recta de regresion sobre las ventas mensuales, hasta marzo de 2011
+			VAR Meses =
+			    CALCULATETABLE(
+			        FILTER(
+			            ADDCOLUMNS(
+			                SUMMARIZE(fVenta, dTiempo[anio], dTiempo[mes]),
+			                "@t", dTiempo[anio] * 12 + dTiempo[mes],
+			                "@monto", [Monto total vendido]
+			            ),
+			            NOT ISBLANK([@monto])
+			        ),
+			        REMOVEFILTERS(dTiempo)
+			    )
+			VAR Recta = LINESTX(Meses, [@monto], [@t])
+			VAR t = MAX(dTiempo[anio]) * 12 + MAX(dTiempo[mes])
+			VAR Primero = MINX(Meses, [@t])
+			RETURN
+			    IF(
+			        COUNTROWS(Meses) >= 2 && t >= Primero && t <= 2011 * 12 + 3,
+			        MAXX(Recta, [Intercept]) + MAXX(Recta, [Slope1]) * t
+			    )
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Proyecciones
+		lineageTag: 5cac0ce6-db74-4fac-8fd1-d9cfef3f8445
+
+	measure 'Proyección 1er trimestre 2011' =
+			-- Suma de la recta de regresion de enero a marzo de 2011 (no considera estacionalidad)
+			VAR Meses =
+			    CALCULATETABLE(
+			        FILTER(
+			            ADDCOLUMNS(
+			                SUMMARIZE(fVenta, dTiempo[anio], dTiempo[mes]),
+			                "@t", dTiempo[anio] * 12 + dTiempo[mes],
+			                "@monto", [Monto total vendido]
+			            ),
+			            NOT ISBLANK([@monto])
+			        ),
+			        REMOVEFILTERS(dTiempo)
+			    )
+			VAR Recta = LINESTX(Meses, [@monto], [@t])
+			RETURN
+			    IF(
+			        COUNTROWS(Meses) >= 2,
+			        SUMX(GENERATESERIES(2011 * 12 + 1, 2011 * 12 + 3, 1), MAXX(Recta, [Intercept]) + MAXX(Recta, [Slope1]) * [Value])
+			    )
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Proyecciones
+		lineageTag: 9389984c-00c7-4403-a2ad-b20dd26b3b8a
+
+	measure 'Proyección 2011' =
+			-- Suma de la recta de regresion de los 12 meses de 2011 (en el contexto: por vendedor, etc.)
+			VAR Meses =
+			    CALCULATETABLE(
+			        FILTER(
+			            ADDCOLUMNS(
+			                SUMMARIZE(fVenta, dTiempo[anio], dTiempo[mes]),
+			                "@t", dTiempo[anio] * 12 + dTiempo[mes],
+			                "@monto", [Monto total vendido]
+			            ),
+			            NOT ISBLANK([@monto])
+			        ),
+			        REMOVEFILTERS(dTiempo)
+			    )
+			VAR Recta = LINESTX(Meses, [@monto], [@t])
+			RETURN
+			    IF(
+			        COUNTROWS(Meses) >= 2,
+			        SUMX(GENERATESERIES(2011 * 12 + 1, 2011 * 12 + 12, 1), MAXX(Recta, [Intercept]) + MAXX(Recta, [Slope1]) * [Value])
+			    )
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Proyecciones
+		lineageTag: 35c01e98-dbaf-43c7-86c2-2e821b56c4e1
 
 	column id_venta
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: 2fed2b0b-92f7-4cec-aafc-62a1daefe986
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_venta
 
 		annotation SummarizationSetBy = Automatic
 
 	column version_sistema
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: 61260b22-934f-4b7a-a546-f990cf413c48
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: version_sistema
 
 		annotation SummarizationSetBy = Automatic
 
 	column id_venta_sistema
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: a21b64b6-0609-4d25-8607-56d7971ac1bb
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id_venta_sistema
 
 		annotation SummarizationSetBy = Automatic
@@ -122,6 +257,7 @@ table fVenta
 		annotation UnderlyingDateTimeDataType = Date
 
 	column id_cliente
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: 4754217b-aefc-4eb3-aa3a-498682b96325
@@ -131,6 +267,7 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column id_empleado
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: 59495cc4-89ae-4e8a-a512-89702081b84f
@@ -140,6 +277,7 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column id_producto
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: 4dea1755-6c88-48cb-b297-411d9e267cd6
@@ -149,6 +287,7 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column zipcode
+		isHidden
 		dataType: string
 		lineageTag: df8f1509-d30d-4d4d-abc6-dbeeb24681d9
 		summarizeBy: none
@@ -291,6 +430,47 @@ table fVenta
 		formatString: 0
 		lineageTag: c8c1c65f-0bc0-4367-b51b-e253de8a109e
 		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rango_Edad =
+			VAR e = fVenta[Edad_Transaccion_Cliente]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(e), "Sin dato",
+			        e < 20, "Menos de 20",
+			        e < 30, "20 a 29",
+			        e < 40, "30 a 39",
+			        e < 50, "40 a 49",
+			        e < 60, "50 a 59",
+			        e < 70, "60 a 69",
+			        "70 o más"
+			    )
+		summarizeBy: none
+		sortByColumn: Rango_Edad_Orden
+		lineageTag: 62ca7c78-577b-491a-9c62-f77db9112947
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rango_Edad_Orden =
+			VAR e = fVenta[Edad_Transaccion_Cliente]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(e), 99,
+			        e < 20, 1,
+			        e < 30, 2,
+			        e < 40, 3,
+			        e < 50, 4,
+			        e < 60, 5,
+			        e < 70, 6,
+			        7
+			    )
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		lineageTag: 1054f0dd-b83b-49ca-8129-d9b586405ff9
 
 		annotation SummarizationSetBy = Automatic
 

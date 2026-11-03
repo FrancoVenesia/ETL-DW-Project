@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "8cdceaaf1c3924097fd6",
+  "displayName": "10) Vendedores: 2011 y antigüedad",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

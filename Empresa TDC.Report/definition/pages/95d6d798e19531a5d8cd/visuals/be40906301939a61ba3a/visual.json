@@ -1,0 +1,57 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "be40906301939a61ba3a",
+  "position": {
+    "x": 910,
+    "y": 220,
+    "z": 2000,
+    "height": 500,
+    "width": 370,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Cómo se calcula",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Se ajusta una recta de regresión (LINESTX) sobre el monto vendido de cada mes con datos, de 2006 a agosto de 2009."
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "La proyección suma los valores de esa recta para enero, febrero y marzo de 2011."
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Supone condiciones económicas estables, como pide el enunciado, y no considera estacionalidad."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

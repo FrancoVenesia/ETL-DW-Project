@@ -5,7 +5,7 @@
     "x": 448.33333333333337,
     "y": 258.33333333333337,
     "z": 2000,
-    "height": 461.66666666666669,
+    "height": 461.6666666666667,
     "width": 463.33333333333337,
     "tabOrder": 2000
   },
@@ -23,11 +23,12 @@
                       "Entity": "dTiempo"
                     }
                   },
-                  "Property": "fecha"
+                  "Property": "inicio_mes"
                 }
               },
-              "queryRef": "dTiempo.fecha",
-              "nativeQueryRef": "fecha",
+              "queryRef": "dTiempo.inicio_mes",
+              "nativeQueryRef": "Mes",
+              "displayName": "Mes",
               "active": true
             }
           ]
@@ -79,23 +80,29 @@
                     "Entity": "dTiempo"
                   }
                 },
-                "Property": "fecha"
+                "Property": "inicio_mes"
               }
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "visualContainerObjects": {
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Top 5 Clientes en el Tiempo'"
+                  "Value": "'Pregunta 17: top 5 clientes, monto acumulado en el tiempo'"
                 }
               }
             }
@@ -207,6 +214,64 @@
             }
           ]
         }
+      },
+      {
+        "name": "f2e3b8c673ae337e62b1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dCliente"
+              }
+            },
+            "Property": "id_cliente"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "x",
+              "Entity": "dCliente",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "x"
+                              }
+                            },
+                            "Property": "id_cliente"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "-1L"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
       }
     ]
   }

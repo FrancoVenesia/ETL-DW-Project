@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "95d6d798e19531a5d8cd",
+  "displayName": "8) Pronóstico 1er trimestre 2011",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

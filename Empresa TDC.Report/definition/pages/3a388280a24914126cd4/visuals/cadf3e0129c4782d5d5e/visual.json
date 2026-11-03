@@ -6,7 +6,7 @@
     "y": 115,
     "z": 0,
     "height": 288.33333333333337,
-    "width": 588.33333333333337,
+    "width": 588.3333333333334,
     "tabOrder": 0
   },
   "visual": {
@@ -23,11 +23,12 @@
                       "Entity": "dTiempo"
                     }
                   },
-                  "Property": "fecha"
+                  "Property": "inicio_mes"
                 }
               },
-              "queryRef": "dTiempo.fecha",
-              "nativeQueryRef": "fecha",
+              "queryRef": "dTiempo.inicio_mes",
+              "nativeQueryRef": "Mes",
+              "displayName": "Mes",
               "active": true
             }
           ]
@@ -79,23 +80,29 @@
                     "Entity": "dTiempo"
                   }
                 },
-                "Property": "fecha"
+                "Property": "inicio_mes"
               }
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "visualContainerObjects": {
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Evolución de litros por Rubro'"
+                  "Value": "'Evolución de litros por rubro (por mes)'"
                 }
               }
             }

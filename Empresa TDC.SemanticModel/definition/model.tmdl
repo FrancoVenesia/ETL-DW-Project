@@ -6,18 +6,14 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation __PBI_TimeIntelligenceEnabled = 1
+annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_QueryOrder = ["dCliente","dEmpleado","dGeografia","dProducto","dTiempo","fVenta","fStock"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
 ref table dCliente
-ref table DateTableTemplate_aa8d28a6-b8ce-4af4-953b-380167b4bdf7
-ref table LocalDateTable_0a112122-3612-41f8-9675-f6bfa76b2d0d
 ref table dEmpleado
-ref table LocalDateTable_e91322b1-4545-40d6-980b-5d9ded4e57d5
-ref table LocalDateTable_b7a9494b-0cdd-4088-8be1-1ca1e25739ac
 ref table dGeografia
 ref table dProducto
 ref table dTiempo

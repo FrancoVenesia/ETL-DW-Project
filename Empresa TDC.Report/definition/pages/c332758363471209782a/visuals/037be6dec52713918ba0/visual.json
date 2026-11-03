@@ -3,14 +3,14 @@
   "name": "037be6dec52713918ba0",
   "position": {
     "x": 0,
-    "y": 346.66666666666669,
+    "y": 346.6666666666667,
     "z": 1000,
     "height": 373.33333333333337,
     "width": 458.33333333333337,
     "tabOrder": 1000
   },
   "visual": {
-    "visualType": "columnChart",
+    "visualType": "hundredPercentStackedColumnChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,12 +23,12 @@
                       "Entity": "fVenta"
                     }
                   },
-                  "Property": "Rango_Etario"
+                  "Property": "Rango_Edad"
                 }
               },
-              "queryRef": "fVenta.Rango_Etario",
-              "nativeQueryRef": "Rango_Etario",
-              "active": true
+              "queryRef": "fVenta.Rango_Edad",
+              "nativeQueryRef": "Rango de edad",
+              "displayName": "Rango de edad"
             }
           ]
         },
@@ -73,29 +73,35 @@
         "sort": [
           {
             "field": {
-              "Measure": {
+              "Column": {
                 "Expression": {
                   "SourceRef": {
                     "Entity": "fVenta"
                   }
                 },
-                "Property": "Litros vendidos"
+                "Property": "Rango_Edad"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "visualContainerObjects": {
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Rubro por grupo etario'"
+                  "Value": "'Pregunta 6: mezcla de rubros por rango de edad (% de los litros)'"
                 }
               }
             }

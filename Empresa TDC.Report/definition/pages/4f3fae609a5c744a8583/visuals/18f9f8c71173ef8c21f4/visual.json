@@ -23,11 +23,12 @@
                       "Entity": "dTiempo"
                     }
                   },
-                  "Property": "fecha"
+                  "Property": "inicio_mes"
                 }
               },
-              "queryRef": "dTiempo.fecha",
-              "nativeQueryRef": "fecha",
+              "queryRef": "dTiempo.inicio_mes",
+              "nativeQueryRef": "Mes",
+              "displayName": "Mes",
               "active": true
             }
           ]
@@ -79,23 +80,29 @@
                     "Entity": "dTiempo"
                   }
                 },
-                "Property": "fecha"
+                "Property": "inicio_mes"
               }
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "visualContainerObjects": {
       "title": [
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Evolucion por Region'"
+                  "Value": "'Evolución por región (por mes)'"
                 }
               }
             }

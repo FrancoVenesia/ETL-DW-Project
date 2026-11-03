@@ -1,7 +1,22 @@
 table fStock
 	lineageTag: d293737f-963b-43a3-bf58-988a969f49eb
 
+	measure 'Stock acumulado' =
+			-- Suma de las variaciones desde el primer movimiento registrado (el stock inicial no esta en las fuentes)
+			VAR FechaFin = MAX(dTiempo[fecha])
+			VAR Primera = CALCULATE(MIN(fStock[fecha]), REMOVEFILTERS())
+			VAR Ultima = CALCULATE(MAX(fStock[fecha]), REMOVEFILTERS())
+			RETURN
+			    IF(
+			        FechaFin >= Primera && MIN(dTiempo[fecha]) <= Ultima,
+			        CALCULATE(SUM(fStock[variacion]), REMOVEFILTERS(dTiempo), dTiempo[fecha] <= FechaFin)
+			    )
+		formatString: #,0
+		displayFolder: Stock
+		lineageTag: ab0e79ef-ce47-4b3f-ad92-7efeecb8ecaa
+
 	column id_stock
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: fc1ee200-025f-4e5d-a6d6-bc0da0cf6c89
@@ -33,6 +48,7 @@ table fStock
 		annotation UnderlyingDateTimeDataType = Time
 
 	column id_producto
+		isHidden
 		dataType: int64
 		formatString: 0
 		lineageTag: e43b860c-b0e4-410c-8d2e-b7a965ebecbc

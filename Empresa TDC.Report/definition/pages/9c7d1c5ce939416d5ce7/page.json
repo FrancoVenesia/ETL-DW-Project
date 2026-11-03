@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "9c7d1c5ce939416d5ce7",
+  "displayName": "7) Ranking de productos por región",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}
