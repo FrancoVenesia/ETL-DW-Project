@@ -12,11 +12,12 @@ parsed AS (
     SELECT 
         PRODUCT_ID,
         VARIATION,
-        CAST(LEFT(stock_date_cleaned, 10) AS DATE) AS fecha_date,
+        -- Estilo 101 (MM/DD/YYYY) explicito: no depende del idioma del login
+        CONVERT(DATE, LEFT(stock_date_cleaned, 10), 101) AS fecha_date,
         DATETIMEFROMPARTS(
-            YEAR(CAST(LEFT(stock_date_cleaned, 10) AS DATE)),
-            MONTH(CAST(LEFT(stock_date_cleaned, 10) AS DATE)),
-            DAY(CAST(LEFT(stock_date_cleaned, 10) AS DATE)),
+            YEAR(CONVERT(DATE, LEFT(stock_date_cleaned, 10), 101)),
+            MONTH(CONVERT(DATE, LEFT(stock_date_cleaned, 10), 101)),
+            DAY(CONVERT(DATE, LEFT(stock_date_cleaned, 10), 101)),
             CASE 
                 WHEN RIGHT(stock_date_cleaned, 4) = 'p.m.' AND CAST(SUBSTRING(stock_date_cleaned, 12, 2) AS INT) < 12 
                     THEN CAST(SUBSTRING(stock_date_cleaned, 12, 2) AS INT) + 12

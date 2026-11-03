@@ -1,38 +1,12 @@
 CREATE OR ALTER VIEW dbo.VW_VTA_HistorySales AS
 
-WITH VentasTipadas AS (
-    SELECT 
-        TRY_CONVERT(INT, hs.ID) AS id_venta_sistema,
-        TRY_CONVERT(VARCHAR(255), hs.BILLING_ID) AS nro_factura,
-        TRY_CONVERT(DATE, hs.SALE_DATE) AS fecha,
-        TRY_CONVERT(INT, hs.CUSTOMER_ID) AS id_cliente,
-        TRY_CONVERT(INT, hs.EMPLOYEE_ID) AS id_empleado,
-        TRY_CONVERT(INT, hs.PRODUCT_ID) AS id_producto,
-        TRY_CONVERT(INT, hs.QUANTITY) AS cantidad
-    FROM STAGING_TDC.dbo.STG_VTA_HistorySales hs
-),
-
-VentaConPrecio AS (
-    SELECT 
-        vt.*,
-        TRY_CONVERT(DECIMAL(12,2), p.PRICE) AS precio_unitario
-    FROM VentasTipadas vt
-    OUTER APPLY (
-        SELECT TOP 1 
-            p.PRICE
-        FROM STAGING_TDC.dbo.STG_VTA_MySQL_Prices p
-        WHERE TRY_CONVERT(INT, p.PRODUCT_ID) = vt.id_producto
-          AND TRY_CONVERT(DATE, p.PRICE_DATE) <= vt.fecha
-        ORDER BY TRY_CONVERT(DATE, p.PRICE_DATE) DESC
-    ) p
-),
-
-VentaConMontos AS (
+-- Las facturas con lineas rechazadas quedan registradas en VW_VTA_Rechazos
+WITH VentaConMontos AS (
     SELECT
-        vp.*,
-        vp.cantidad * vp.precio_unitario AS monto_base_item
-    FROM VentaConPrecio vp
-    WHERE vp.precio_unitario IS NOT NULL
+        vl.*,
+        vl.cantidad * vl.precio_unitario AS monto_base_item
+    FROM dbo.VW_VTA_HistorySales_Lineas vl
+    WHERE vl.lineas_rechazadas_factura = 0
 ),
 
 VentaConTotal AS (

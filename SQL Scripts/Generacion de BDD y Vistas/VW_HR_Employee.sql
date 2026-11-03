@@ -5,11 +5,12 @@ SELECT
         FULL_NAME AS nombre_completo,
         GENDER AS genero,
         CATEGORY AS categoria,
-        TRY_CONVERT(DATE, EMPLOYMENT_DATE) AS fecha_ingreso,
-        TRY_CONVERT(DATE, BIRTH_DATE) AS fecha_nacimiento,
+        -- Estilo 101 (MM/DD/YYYY) explicito: no depende del idioma del login
+        TRY_CONVERT(DATE, EMPLOYMENT_DATE, 101) AS fecha_ingreso,
+        TRY_CONVERT(DATE, BIRTH_DATE, 101) AS fecha_nacimiento,
 
 
-        DATEDIFF(YEAR, TRY_CONVERT(DATE, BIRTH_DATE), GETDATE()) AS edad,
+        DATEDIFF(YEAR, TRY_CONVERT(DATE, BIRTH_DATE, 101), GETDATE()) AS edad,
 
         EDUCATION_LEVEL AS nivel_educacion
     FROM STAGING_TDC.dbo.STG_HR_Employee

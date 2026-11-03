@@ -1998,10 +1998,15 @@ where [refTable].[zipcode] = ?</property>
                       UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
     CUSTOMER_ID,
     FULL_NAME,
-    REPLACE(BIRTH_DATE, '*', '') AS BIRTH_DATE,
+    -- MM/DD/YYYY a YYYY-MM-DD: el paquete corre con locale es-AR y leeria DD/MM
+    CAST(COALESCE(
+        CONVERT(VARCHAR(10), TRY_CONVERT(DATE, REPLACE(REPLACE(BIRTH_DATE, '*', ''), 'j', ''), 101), 23),
+        BIRTH_DATE
+    ) AS VARCHAR(255)) AS BIRTH_DATE,
     CITY,
     STATE,
-    ZIPCODE
+    -- Los XML traen los zipcodes sin el cero inicial (6550 en vez de 06550)
+    CAST(RIGHT('00000' + LTRIM(RTRIM(ZIPCODE)), 5) AS VARCHAR(255)) AS ZIPCODE
 FROM STG_COM_Customer_Retail</property>
                     <property
                       dataType="System.String"
@@ -2123,7 +2128,7 @@ FROM STG_COM_Customer_Retail</property>
                           refId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Retail.Outputs[OLE DB Source Output].ExternalColumns[BIRTH_DATE]"
                           codePage="1252"
                           dataType="str"
-                          length="8000"
+                          length="255"
                           name="BIRTH_DATE" />
                         <externalMetadataColumn
                           refId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Retail.Outputs[OLE DB Source Output].ExternalColumns[CITY]"
@@ -2168,7 +2173,7 @@ FROM STG_COM_Customer_Retail</property>
                           refId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Retail.Outputs[OLE DB Source Error Output].Columns[BIRTH_DATE]"
                           codePage="1252"
                           dataType="str"
-                          length="8000"
+                          length="255"
                           lineageId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Retail.Outputs[OLE DB Source Error Output].Columns[BIRTH_DATE]"
                           name="BIRTH_DATE" />
                         <outputColumn
@@ -2237,10 +2242,15 @@ FROM STG_COM_Customer_Retail</property>
                       UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
     CUSTOMER_ID,
     FULL_NAME,
-    REPLACE(BIRTH_DATE, 'j', '') AS BIRTH_DATE,
+    -- MM/DD/YYYY a YYYY-MM-DD: el paquete corre con locale es-AR y leeria DD/MM
+    CAST(COALESCE(
+        CONVERT(VARCHAR(10), TRY_CONVERT(DATE, REPLACE(REPLACE(BIRTH_DATE, '*', ''), 'j', ''), 101), 23),
+        BIRTH_DATE
+    ) AS VARCHAR(255)) AS BIRTH_DATE,
     CITY,
     STATE,
-    ZIPCODE
+    -- Los XML traen los zipcodes sin el cero inicial (6550 en vez de 06550)
+    CAST(RIGHT('00000' + LTRIM(RTRIM(ZIPCODE)), 5) AS VARCHAR(100)) AS ZIPCODE
 FROM STG_COM_Customer_Wholesale</property>
                     <property
                       dataType="System.String"
@@ -2362,7 +2372,7 @@ FROM STG_COM_Customer_Wholesale</property>
                           refId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Wholesale.Outputs[OLE DB Source Output].ExternalColumns[BIRTH_DATE]"
                           codePage="1252"
                           dataType="str"
-                          length="8000"
+                          length="255"
                           name="BIRTH_DATE" />
                         <externalMetadataColumn
                           refId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Wholesale.Outputs[OLE DB Source Output].ExternalColumns[CITY]"
@@ -2407,7 +2417,7 @@ FROM STG_COM_Customer_Wholesale</property>
                           refId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Wholesale.Outputs[OLE DB Source Error Output].Columns[BIRTH_DATE]"
                           codePage="1252"
                           dataType="str"
-                          length="8000"
+                          length="255"
                           lineageId="Package\DW Load\Importar dimensiones Dependientes (segundo nivel) a DW\STG_COM_Clients_Wholesale.Outputs[OLE DB Source Error Output].Columns[BIRTH_DATE]"
                           name="BIRTH_DATE" />
                         <outputColumn
@@ -2992,11 +3002,13 @@ FROM STG_COM_Customer_Wholesale</property>
                           externalMetadataColumnId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\dProducto.Inputs[OLE DB Destination Input].ExternalColumns[id_producto]"
                           lineageId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].Columns[PRODUCT_ID]" />
                         <inputColumn
-                          refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\dProducto.Inputs[OLE DB Destination Input].Columns[CM3]"
-                          cachedDataType="i4"
-                          cachedName="CM3"
+                          refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\dProducto.Inputs[OLE DB Destination Input].Columns[contenido_litros]"
+                          cachedDataType="numeric"
+                          cachedName="contenido_litros"
+                          cachedPrecision="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\dProducto.Inputs[OLE DB Destination Input].ExternalColumns[contenido_litros]"
-                          lineageId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].Columns[CM3]" />
+                          lineageId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].Columns[contenido_litros]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -3522,7 +3534,7 @@ SELECT Fecha,
         h.HOLIDAY AS nombre_feriado
     FROM Fechas f
     LEFT JOIN STAGING_TDC.dbo.STG_HR_Holidays h
-        ON f.Fecha = TRY_CONVERT(DATE, h.HOLIDAY_DATE)
+        ON f.Fecha = TRY_CONVERT(DATE, h.HOLIDAY_DATE, 103) -- llega como D/M/YYYY (locale es-AR del paquete)
     OPTION (MAXRECURSION 0)</property>
                     <property
                       dataType="System.String"
@@ -4508,6 +4520,17 @@ FROM VW_PRD_Products</property>
                           name="CM3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
+                          refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].Columns[contenido_litros]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].ExternalColumns[contenido_litros]"
+                          lineageId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].Columns[contenido_litros]"
+                          name="contenido_litros"
+                          precision="10"
+                          scale="3"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
                           refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].Columns[tipo_envase]"
                           codePage="1252"
                           dataType="str"
@@ -4572,6 +4595,12 @@ FROM VW_PRD_Products</property>
                           dataType="numeric"
                           name="CM3"
                           precision="21"
+                          scale="3" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].ExternalColumns[contenido_litros]"
+                          dataType="numeric"
+                          name="contenido_litros"
+                          precision="10"
                           scale="3" />
                         <externalMetadataColumn
                           refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Output].ExternalColumns[tipo_envase]"
@@ -4640,6 +4669,13 @@ FROM VW_PRD_Products</property>
                           lineageId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Error Output].Columns[CM3]"
                           name="CM3"
                           precision="21"
+                          scale="3" />
+                        <outputColumn
+                          refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Error Output].Columns[contenido_litros]"
+                          dataType="numeric"
+                          lineageId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Error Output].Columns[contenido_litros]"
+                          name="contenido_litros"
+                          precision="10"
                           scale="3" />
                         <outputColumn
                           refId="Package\DW Load\Importar dimensiones Independientes(segundo nivel) a DW\VW_Prd_Products.Outputs[OLE DB Source Error Output].Columns[tipo_envase]"
@@ -6369,6 +6405,311 @@ FROM VW_PRD_Products</property>
                   </outputs>
                 </component>
                 <component
+                  refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="ERROR_fVenta2"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[ERROR_fVenta]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Conexion DW (SQL Server Express)]"
+                      connectionManagerRefId="Package.ConnectionManagers[Conexion DW (SQL Server Express)]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[fecha]"
+                          cachedDataType="dbDate"
+                          cachedName="fecha"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[fecha]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[fecha]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[id_cliente]"
+                          cachedDataType="i4"
+                          cachedName="id_cliente"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[id_cliente]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[id_cliente]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[id_empleado]"
+                          cachedDataType="i4"
+                          cachedName="id_empleado"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[id_empleado]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[id_empleado]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[id_producto]"
+                          cachedDataType="i4"
+                          cachedName="id_producto"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[id_producto]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[id_producto]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[zipcode]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="zipcode"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[zipcode]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[zipcode]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[nro_factura]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="nro_factura"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[nro_factura]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[nro_factura]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[cantidad]"
+                          cachedDataType="i4"
+                          cachedName="cantidad"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[cantidad]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[cantidad]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[litros_vendidos]"
+                          cachedDataType="numeric"
+                          cachedName="litros_vendidos"
+                          cachedPrecision="30"
+                          cachedScale="9"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[litros_vendidos]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[litros_vendidos]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[precio_unitario]"
+                          cachedDataType="numeric"
+                          cachedName="precio_unitario"
+                          cachedPrecision="12"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[precio_unitario]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[precio_unitario]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[monto_base]"
+                          cachedDataType="numeric"
+                          cachedName="monto_base"
+                          cachedPrecision="23"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[monto_base]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[monto_base]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[porcentaje_descuento]"
+                          cachedDataType="numeric"
+                          cachedName="porcentaje_descuento"
+                          cachedPrecision="5"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[porcentaje_descuento]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[porcentaje_descuento]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[monto_descuento]"
+                          cachedDataType="numeric"
+                          cachedName="monto_descuento"
+                          cachedPrecision="35"
+                          cachedScale="9"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[monto_descuento]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[monto_descuento]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[monto_final]"
+                          cachedDataType="numeric"
+                          cachedName="monto_final"
+                          cachedPrecision="36"
+                          cachedScale="9"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[monto_final]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[monto_final]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[id_venta_sistema]"
+                          cachedDataType="i4"
+                          cachedName="id_venta_sistema"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[Error_code]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[id_venta_sistema]" />
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].Columns[version_sistema]"
+                          cachedDataType="i4"
+                          cachedName="version_sistema"
+                          externalMetadataColumnId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[Error_column]"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[version_sistema]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[id_venta]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="id_venta" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[fecha]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="fecha" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[id_cliente]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="id_cliente" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[id_empleado]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="id_empleado" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[id_producto]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="id_producto" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[zipcode]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="zipcode" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[nro_factura]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="nro_factura" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[cantidad]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="cantidad" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[litros_vendidos]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="litros_vendidos" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[precio_unitario]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="precio_unitario" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[monto_base]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="monto_base" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[porcentaje_descuento]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="porcentaje_descuento" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[monto_descuento]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="monto_descuento" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[monto_final]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="monto_final" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[Error_code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="Error_code" />
+                        <externalMetadataColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input].ExternalColumns[Error_column]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="Error_column" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
                   refId="Package\DW Load\Importar Hechos a DW\Validez dCliente"
                   componentClassID="Microsoft.Lookup"
                   contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
@@ -6816,6 +7157,147 @@ where [refTable].[id_empleado] = ?</property>
                           refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                           dataType="i4"
                           lineageId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Validez dEmpleado1"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dEmpleado]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dEmpleado]) [refTable]
+where [refTable].[id_empleado] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="id_empleado" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="nombre_completo" dataType="DT_STR" length="255" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="genero" dataType="DT_STR" length="255" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="categoria" dataType="DT_STR" length="255" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="fecha_ingreso" dataType="DT_DBDATE" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="fecha_nacimiento" dataType="DT_DBDATE" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="nivel_educacion" dataType="DT_STR" length="255" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\DW Load\Importar Hechos a DW\808:invalid};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Conexion DW (SQL Server Express)]"
+                      connectionManagerRefId="Package.ConnectionManagers[Conexion DW (SQL Server Express)]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Inputs[Lookup Input].Columns[id_empleado]"
+                          cachedDataType="i4"
+                          cachedName="id_empleado"
+                          lineageId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output].Columns[id_empleado]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">id_empleado</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                           name="ErrorColumn"
                           specialFlags="2" />
                       </outputColumns>
@@ -7836,7 +8318,7 @@ where [refTable].[id_empleado] = ?</property>
                   startId="Package\DW Load\Importar Hechos a DW\Validez dCliente.Outputs[Lookup Match Output]" />
                 <path
                   refId="Package\DW Load\Importar Hechos a DW.Paths[Lookup Match Output2]"
-                  endId="Package\DW Load\Importar Hechos a DW\DW_fVenta0.Inputs[OLE DB Destination Input]"
+                  endId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Inputs[Lookup Input]"
                   name="Lookup Match Output"
                   startId="Package\DW Load\Importar Hechos a DW\Validez dCliente1.Outputs[Lookup Match Output]" />
                 <path
@@ -7869,6 +8351,16 @@ where [refTable].[id_empleado] = ?</property>
                   endId="Package\DW Load\Importar Hechos a DW\Validez dCliente1.Inputs[Lookup Input]"
                   name="OLE DB Source Output"
                   startId="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\DW Load\Importar Hechos a DW.Paths[Lookup Match Output3]"
+                  endId="Package\DW Load\Importar Hechos a DW\DW_fVenta0.Inputs[OLE DB Destination Input]"
+                  name="Lookup Match Output"
+                  startId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\DW Load\Importar Hechos a DW.Paths[Lookup No Match Output3]"
+                  endId="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2.Inputs[OLE DB Destination Input]"
+                  name="Lookup No Match Output"
+                  startId="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1.Outputs[Lookup No Match Output]" />
               </paths>
             </pipeline>
           </DTS:ObjectData>
@@ -7888,6 +8380,23 @@ where [refTable].[id_empleado] = ?</property>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{1D266CA7-5049-4F13-9620-B3546099B7A8}"
               SQLTask:SqlStatementSource="DELETE FROM fVenta; &#xA;DELETE FROM fStock;&#xA;DELETE FROM dCliente;&#xA;DELETE FROM dEmpleado;&#xA;DELETE FROM dGeografia;&#xA;DELETE FROM dProducto;&#xA;DELETE FROM dTiempo; &#xA;DELETE FROM ERROR_dCliente_dGeografia; &#xA;DELETE FROM ERROR_fVenta;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\DW Load\Registrar ventas rechazadas"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{03D8B021-FE96-457E-BE72-7E4F0311E601}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Registrar ventas rechazadas"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{1D266CA7-5049-4F13-9620-B3546099B7A8}"
+              SQLTask:SqlStatementSource="INSERT INTO ERROR_fVenta (id_venta, fecha, id_cliente, id_empleado, id_producto, nro_factura, cantidad, Error_code, Error_column)&#xA;SELECT id_venta_sistema, fecha, id_cliente, id_empleado, id_producto, nro_factura, cantidad, Error_code, Error_column&#xA;FROM STAGING_TDC.dbo.VW_VTA_Rechazos;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -7916,6 +8425,14 @@ where [refTable].[id_empleado] = ?</property>
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 2"
           DTS:To="Package\DW Load\Importar Hechos a DW" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\DW Load.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{33C0C333-D5CA-4007-8657-7F62248B3054}"
+          DTS:From="Package\DW Load\Importar Hechos a DW"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\DW Load\Registrar ventas rechazadas" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
@@ -13181,6 +13698,10 @@ where [refTable].[id_empleado] = ?</property>
           Size="192,42"
           Id="Package\DW Load\Truncado y Borrado DW"
           TopLeft="89.2500000000001,5.61243710050371" />
+        <NodeLayout
+          Size="214,42"
+          Id="Package\DW Load\Registrar ventas rechazadas"
+          TopLeft="42.5476190476189,455" />
         <EdgeLayout
           Id="Package\DW Load.PrecedenceConstraints[Constraint]"
           TopLeft="186.708333333333,47.6124371005037">
@@ -13271,11 +13792,33 @@ where [refTable].[id_empleado] = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DW Load.PrecedenceConstraints[Constraint 3]"
+          TopLeft="149.547619047619,404.873015873016">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,50.126984126984"
+              Start="0,0"
+              End="0,42.626984126984">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.626984126984" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="436,507"
-          Size="436,550"
+          PanelSize="436,557"
+          Size="436,600"
           Id="Package\DW Load"
           TopLeft="807.555555555555,95.833333333333" />
         <NodeLayout
@@ -14255,7 +14798,15 @@ where [refTable].[id_empleado] = ?</property>
         <NodeLayout
           Size="138,42"
           Id="Package\DW Load\Importar Hechos a DW\DW_fVenta0"
-          TopLeft="821.888888888889,517.777777777778" />
+          TopLeft="900,512" />
+        <NodeLayout
+          Size="175,42"
+          Id="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1"
+          TopLeft="650,512" />
+        <NodeLayout
+          Size="155,42"
+          Id="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2"
+          TopLeft="660,613" />
         <NodeLayout
           Size="153,42"
           Id="Package\DW Load\Importar Hechos a DW\Validez dCliente"
@@ -14480,25 +15031,73 @@ where [refTable].[id_empleado] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DW Load\Importar Hechos a DW.Paths[Lookup Match Output2]"
-          TopLeft="578,535.888888888889">
+          TopLeft="578,533">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="243.888888888889,0"
+              EndConnector="72,0"
               Start="0,0"
-              End="236.388888888889,0">
+              End="64.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="236.388888888889,0" />
+                    End="64.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="70.0030577256945,5,96.3827734375,11.609375"
+              BoundingBox="-12.19,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DW Load\Importar Hechos a DW.Paths[Lookup Match Output3]"
+          TopLeft="825,533">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="75,0"
+              Start="0,0"
+              End="67.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="67.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-10.69,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DW Load\Importar Hechos a DW.Paths[Lookup No Match Output3]"
+          TopLeft="737.5,554">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-55.8,22,111.6127734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -14655,6 +15254,29 @@ where [refTable].[id_empleado] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\DW Load\Importar Hechos a DW\Validez dEmpleado1">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dEmpleado]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\DW Load\Importar Hechos a DW\VW_VTA_MySQL_VentaActual">
     <Properties>
       <Property>
@@ -14744,6 +15366,19 @@ where [refTable].[id_empleado] = ?</property>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\DW Load\Importar Hechos a DW\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DW Load\Importar Hechos a DW\ERROR_fVenta2">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

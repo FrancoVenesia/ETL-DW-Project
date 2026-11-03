@@ -1,59 +1,32 @@
 CREATE OR ALTER VIEW dbo.VW_VTA_MySQL_VentaActual AS
 
+-- Los XML traen los zipcodes sin el cero inicial (6550 en vez de 06550)
 WITH Clientes AS (
-    SELECT 
+    SELECT
         TRY_CONVERT(INT, CUSTOMER_ID) AS id_cliente,
-        ZIPCODE AS zipcode
+        CAST(RIGHT('00000' + LTRIM(RTRIM(ZIPCODE)), 5) AS VARCHAR(255)) AS zipcode
     FROM STAGING_TDC.dbo.STG_COM_Customer_Retail
 
     UNION ALL
 
-    SELECT 
+    SELECT
         TRY_CONVERT(INT, CUSTOMER_ID) AS id_cliente,
-        ZIPCODE AS zipcode
+        CAST(RIGHT('00000' + LTRIM(RTRIM(ZIPCODE)), 5) AS VARCHAR(255)) AS zipcode
     FROM STAGING_TDC.dbo.STG_COM_Customer_Wholesale
 ),
 
-LineasVenta AS (
-    SELECT
-        TRY_CONVERT(INT, b.BILLING_ID) AS id_venta_sistema,
-        TRY_CONVERT(VARCHAR(255), b.BILLING_ID) AS nro_factura,
-        TRY_CONVERT(DATE, b.BILLING_DATE) AS fecha,
-        TRY_CONVERT(INT, b.CUSTOMER_ID) AS id_cliente,
-        TRY_CONVERT(INT, b.EMPLOYEE_ID) AS id_empleado,
-        TRY_CONVERT(INT, bd.PRODUCT_ID) AS id_producto,
-        TRY_CONVERT(INT, bd.QUANTITY) AS cantidad
-    FROM STAGING_TDC.dbo.STG_VTA_MySQL_Billing b
-    INNER JOIN STAGING_TDC.dbo.STG_VTA_MySQL_BillingDetail bd
-        ON b.BILLING_ID = bd.BILLING_ID
-),
-
-LineasConPrecio AS (
-    SELECT
-        lv.*,
-        TRY_CONVERT(DECIMAL(12,2), pr.PRICE) AS precio_unitario
-    FROM LineasVenta lv
-    OUTER APPLY (
-        SELECT TOP 1
-            p.PRICE
-        FROM STAGING_TDC.dbo.STG_VTA_MySQL_Prices p
-        WHERE TRY_CONVERT(INT, p.PRODUCT_ID) = lv.id_producto
-          AND TRY_CONVERT(DATE, p.PRICE_DATE) <= lv.fecha
-        ORDER BY TRY_CONVERT(DATE, p.PRICE_DATE) DESC
-    ) pr
-),
-
+-- Las facturas con lineas rechazadas quedan registradas en VW_VTA_Rechazos
 LineasConProductoCliente AS (
     SELECT
         lp.*,
         c.zipcode,
         prod.CM3
-    FROM LineasConPrecio lp
+    FROM dbo.VW_VTA_MySQL_Lineas lp
     LEFT JOIN Clientes c
         ON lp.id_cliente = c.id_cliente
     INNER JOIN dbo.VW_PRD_Products prod
         ON lp.id_producto = prod.PRODUCT_ID
-    WHERE lp.precio_unitario IS NOT NULL
+    WHERE lp.lineas_rechazadas_factura = 0
 ),
 
 LineasConMonto AS (

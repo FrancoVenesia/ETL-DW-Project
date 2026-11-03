@@ -24,6 +24,6 @@ SELECT Fecha,
         h.HOLIDAY AS nombre_feriado
     FROM Fechas f
     LEFT JOIN STAGING_TDC.dbo.STG_HR_Holidays h
-        ON f.Fecha = TRY_CONVERT(DATE, h.HOLIDAY_DATE)
+        ON f.Fecha = TRY_CONVERT(DATE, h.HOLIDAY_DATE, 103) -- llega como D/M/YYYY (locale es-AR del paquete)
     OPTION (MAXRECURSION 0)
 
