@@ -28,6 +28,7 @@
               },
               "queryRef": "dEmpleado.nombre_completo",
               "nativeQueryRef": "Vendedor",
+              "active": true,
               "displayName": "Vendedor"
             }
           ]
@@ -52,6 +53,7 @@
               },
               "queryRef": "Avg(dEmpleado.antiguedad_anios)",
               "nativeQueryRef": "Antigüedad (años)",
+              "active": true,
               "displayName": "Antigüedad (años)"
             }
           ]

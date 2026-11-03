@@ -13,40 +13,6 @@
     "visualType": "pivotTable",
     "query": {
       "queryState": {
-        "Rows": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dGeografia"
-                    }
-                  },
-                  "Property": "region"
-                }
-              },
-              "queryRef": "dGeografia.region",
-              "nativeQueryRef": "Región",
-              "displayName": "Región"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dProducto"
-                    }
-                  },
-                  "Property": "producto"
-                }
-              },
-              "queryRef": "dProducto.producto",
-              "nativeQueryRef": "Producto",
-              "displayName": "Producto"
-            }
-          ]
-        },
         "Columns": {
           "projections": [
             {
@@ -62,8 +28,44 @@
               },
               "queryRef": "dTiempo.anio",
               "nativeQueryRef": "Año",
-              "displayName": "Año",
-              "active": true
+              "active": true,
+              "displayName": "Año"
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dGeografia"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "dGeografia.region",
+              "nativeQueryRef": "Región",
+              "active": true,
+              "displayName": "Región"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dProducto"
+                    }
+                  },
+                  "Property": "producto"
+                }
+              },
+              "queryRef": "dProducto.producto",
+              "nativeQueryRef": "Producto",
+              "active": false,
+              "displayName": "Producto"
             }
           ]
         },

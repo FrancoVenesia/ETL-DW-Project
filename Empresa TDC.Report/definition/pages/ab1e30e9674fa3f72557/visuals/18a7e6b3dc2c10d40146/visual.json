@@ -28,25 +28,8 @@
               },
               "queryRef": "dTiempo.nombre_mes",
               "nativeQueryRef": "Mes",
+              "active": true,
               "displayName": "Mes"
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "fVenta"
-                    }
-                  },
-                  "Property": "Índice estacional"
-                }
-              },
-              "queryRef": "fVenta.Índice estacional",
-              "nativeQueryRef": "Índice estacional"
             }
           ]
         },
@@ -66,6 +49,24 @@
               "queryRef": "dProducto.rubro",
               "nativeQueryRef": "Rubro",
               "displayName": "Rubro"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Índice estacional"
+                }
+              },
+              "queryRef": "fVenta.Índice estacional",
+              "nativeQueryRef": "Índice estacional"
             }
           ]
         }

@@ -76,10 +76,10 @@ table dTiempo
 
 	column nombre_dia_semana
 		dataType: string
-		sortByColumn: dia_semana
 		lineageTag: 033dcb8f-2463-471f-b45c-ac42750db8c6
 		summarizeBy: none
 		sourceColumn: nombre_dia_semana
+		sortByColumn: dia_semana
 
 		annotation SummarizationSetBy = Automatic
 
@@ -131,8 +131,8 @@ table dTiempo
 
 	column inicio_mes = DATE(dTiempo[anio], dTiempo[mes], 1)
 		formatString: mmm yyyy
-		summarizeBy: none
 		lineageTag: 767c9103-51d3-4c2d-b608-6fa7059f344a
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 

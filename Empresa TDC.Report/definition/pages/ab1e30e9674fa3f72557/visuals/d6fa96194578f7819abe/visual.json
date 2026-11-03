@@ -28,6 +28,7 @@
               },
               "queryRef": "dTiempo.nombre_mes",
               "nativeQueryRef": "Mes",
+              "active": true,
               "displayName": "Mes"
             }
           ]

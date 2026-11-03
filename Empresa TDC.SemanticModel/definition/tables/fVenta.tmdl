@@ -11,10 +11,26 @@ table fVenta
 		displayFolder: Ventas
 		lineageTag: 2fb24656-a201-4d81-b481-42dfe93923f5
 
+	measure 'Cantidad de clientes' =
+			-- Sin el cliente desconocido (-1)
+			CALCULATE(DISTINCTCOUNT(fVenta[id_cliente]), fVenta[id_cliente] <> -1)
+		formatString: #,0
+		displayFolder: Clientes
+		lineageTag: 3f2477d8-0231-4b10-999b-5bfc1a42cd3c
+
 	measure 'Productos vendidos' = SUM(fVenta[cantidad])
 		formatString: #,0
 		displayFolder: Ventas
 		lineageTag: f9e75e59-62c8-420e-8cca-fec372494eca
+
+	measure 'Litros promedio por cliente' =
+			DIVIDE(
+			    [Litros vendidos],
+			    [Cantidad de clientes]
+			)
+		formatString: #,0.00
+		displayFolder: Clientes
+		lineageTag: a691968c-5701-4a3f-a2dd-b41f3eaaf039
 
 	measure 'Monto acumulado vendido' =
 			CALCULATE(
@@ -27,6 +43,39 @@ table fVenta
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ventas
 		lineageTag: 7252b88f-fa92-4a0f-8c3c-da3adb978d0d
+
+	measure 'Cantidad de vendedores' =
+			-- Sin el empleado desconocido (-1)
+			CALCULATE(DISTINCTCOUNT(fVenta[id_empleado]), fVenta[id_empleado] <> -1)
+		formatString: #,0
+		displayFolder: Empleados
+		lineageTag: a0522bdf-911e-4299-a9c2-c42bd71a72c8
+
+	measure 'Acumulado Pareto' =
+			VAR TotalActual = [Monto total vendido]
+			RETURN
+			CALCULATE(
+			    [Monto total vendido],
+			    FILTER(
+			        ALLSELECTED(dCliente[nombre_completo]),
+			        [Monto total vendido] >= TotalActual
+			    )
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Clientes
+		lineageTag: e037f0cb-5308-4662-bfde-b4fd83c648d7
+
+	measure 'Porcentaje Pareto' =
+			DIVIDE(
+			    [Acumulado Pareto],
+			    CALCULATE(
+			        [Monto total vendido],
+			        ALLSELECTED(dCliente[nombre_completo])
+			    )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Clientes
+		lineageTag: 59b7d7a7-2d38-4fa4-9723-e810633c1f6a
 
 	measure 'Monto año anterior' = CALCULATE([Monto total vendido], SAMEPERIODLASTYEAR(dTiempo[fecha]))
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
@@ -57,55 +106,6 @@ table fVenta
 		formatString: 0.00
 		displayFolder: Ventas
 		lineageTag: e99ebd9a-1134-4597-bc4a-f22637173fde
-
-	measure 'Cantidad de clientes' =
-			-- Sin el cliente desconocido (-1)
-			CALCULATE(DISTINCTCOUNT(fVenta[id_cliente]), fVenta[id_cliente] <> -1)
-		formatString: #,0
-		displayFolder: Clientes
-		lineageTag: 3f2477d8-0231-4b10-999b-5bfc1a42cd3c
-
-	measure 'Litros promedio por cliente' =
-			DIVIDE(
-			    [Litros vendidos],
-			    [Cantidad de clientes]
-			)
-		formatString: #,0.00
-		displayFolder: Clientes
-		lineageTag: a691968c-5701-4a3f-a2dd-b41f3eaaf039
-
-	measure 'Acumulado Pareto' =
-			VAR TotalActual = [Monto total vendido]
-			RETURN
-			CALCULATE(
-			    [Monto total vendido],
-			    FILTER(
-			        ALLSELECTED(dCliente[nombre_completo]),
-			        [Monto total vendido] >= TotalActual
-			    )
-			)
-		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
-		displayFolder: Clientes
-		lineageTag: e037f0cb-5308-4662-bfde-b4fd83c648d7
-
-	measure 'Porcentaje Pareto' =
-			DIVIDE(
-			    [Acumulado Pareto],
-			    CALCULATE(
-			        [Monto total vendido],
-			        ALLSELECTED(dCliente[nombre_completo])
-			    )
-			)
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: Clientes
-		lineageTag: 59b7d7a7-2d38-4fa4-9723-e810633c1f6a
-
-	measure 'Cantidad de vendedores' =
-			-- Sin el empleado desconocido (-1)
-			CALCULATE(DISTINCTCOUNT(fVenta[id_empleado]), fVenta[id_empleado] <> -1)
-		formatString: #,0
-		displayFolder: Empleados
-		lineageTag: a0522bdf-911e-4299-a9c2-c42bd71a72c8
 
 	measure '% litros diet' = DIVIDE(CALCULATE([Litros vendidos], dProducto[es_diet] = TRUE()), [Litros vendidos])
 		formatString: 0.0%;-0.0%;0.0%
@@ -216,8 +216,8 @@ table fVenta
 		lineageTag: 35c01e98-dbaf-43c7-86c2-2e821b56c4e1
 
 	column id_venta
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 2fed2b0b-92f7-4cec-aafc-62a1daefe986
 		summarizeBy: none
@@ -226,8 +226,8 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column version_sistema
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 61260b22-934f-4b7a-a546-f990cf413c48
 		summarizeBy: none
@@ -236,8 +236,8 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column id_venta_sistema
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: a21b64b6-0609-4d25-8607-56d7971ac1bb
 		summarizeBy: none
@@ -257,8 +257,8 @@ table fVenta
 		annotation UnderlyingDateTimeDataType = Date
 
 	column id_cliente
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4754217b-aefc-4eb3-aa3a-498682b96325
 		summarizeBy: none
@@ -267,8 +267,8 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column id_empleado
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 59495cc4-89ae-4e8a-a512-89702081b84f
 		summarizeBy: none
@@ -277,8 +277,8 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column id_producto
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4dea1755-6c88-48cb-b297-411d9e267cd6
 		summarizeBy: none
@@ -287,8 +287,8 @@ table fVenta
 		annotation SummarizationSetBy = Automatic
 
 	column zipcode
-		isHidden
 		dataType: string
+		isHidden
 		lineageTag: df8f1509-d30d-4d4d-abc6-dbeeb24681d9
 		summarizeBy: none
 		sourceColumn: zipcode
@@ -447,9 +447,9 @@ table fVenta
 			        e < 70, "60 a 69",
 			        "70 o más"
 			    )
+		lineageTag: 62ca7c78-577b-491a-9c62-f77db9112947
 		summarizeBy: none
 		sortByColumn: Rango_Edad_Orden
-		lineageTag: 62ca7c78-577b-491a-9c62-f77db9112947
 
 		annotation SummarizationSetBy = Automatic
 
@@ -469,8 +469,8 @@ table fVenta
 			    )
 		isHidden
 		formatString: 0
-		summarizeBy: none
 		lineageTag: 1054f0dd-b83b-49ca-8129-d9b586405ff9
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 

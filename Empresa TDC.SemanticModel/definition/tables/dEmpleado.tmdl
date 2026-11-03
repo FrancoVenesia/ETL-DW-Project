@@ -68,8 +68,8 @@ table dEmpleado
 			VAR Fin = MAX(fVenta[fecha])
 			RETURN IF(ISBLANK(dEmpleado[fecha_ingreso]), BLANK(), DATEDIFF(dEmpleado[fecha_ingreso], Fin, DAY) / 365.25)
 		formatString: 0.0
-		summarizeBy: average
 		lineageTag: 37a3b551-425c-47a4-bfd9-d4070ffde466
+		summarizeBy: average
 
 		annotation SummarizationSetBy = User
 

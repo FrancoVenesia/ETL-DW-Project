@@ -16,8 +16,8 @@ table fStock
 		lineageTag: ab0e79ef-ce47-4b3f-ad92-7efeecb8ecaa
 
 	column id_stock
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: fc1ee200-025f-4e5d-a6d6-bc0da0cf6c89
 		summarizeBy: sum
@@ -48,8 +48,8 @@ table fStock
 		annotation UnderlyingDateTimeDataType = Time
 
 	column id_producto
-		isHidden
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: e43b860c-b0e4-410c-8d2e-b7a965ebecbc
 		summarizeBy: none

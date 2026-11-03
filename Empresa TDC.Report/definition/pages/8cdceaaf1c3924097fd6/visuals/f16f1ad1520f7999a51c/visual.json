@@ -28,6 +28,7 @@
               },
               "queryRef": "dEmpleado.nombre_completo",
               "nativeQueryRef": "Vendedor",
+              "active": true,
               "displayName": "Vendedor"
             }
           ]

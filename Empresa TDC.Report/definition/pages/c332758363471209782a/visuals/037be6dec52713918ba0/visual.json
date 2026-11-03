@@ -3,7 +3,7 @@
   "name": "037be6dec52713918ba0",
   "position": {
     "x": 0,
-    "y": 346.6666666666667,
+    "y": 346.66666666666669,
     "z": 1000,
     "height": 373.33333333333337,
     "width": 458.33333333333337,
@@ -28,6 +28,7 @@
               },
               "queryRef": "fVenta.Rango_Edad",
               "nativeQueryRef": "Rango de edad",
+              "active": true,
               "displayName": "Rango de edad"
             }
           ]
