@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "93e8296486ece7713e59",
+  "position": {
+    "x": 10.078740157480315,
+    "y": 0,
+    "z": 0,
+    "height": 720.62992125984249,
+    "width": 1269.9212598425197,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fStock"
+                    }
+                  },
+                  "Property": "fecha"
+                }
+              },
+              "queryRef": "fStock.fecha",
+              "nativeQueryRef": "fecha",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dProducto"
+                    }
+                  },
+                  "Property": "rubro"
+                }
+              },
+              "queryRef": "dProducto.rubro",
+              "nativeQueryRef": "rubro"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dProducto"
+                    }
+                  },
+                  "Property": "producto"
+                }
+              },
+              "queryRef": "dProducto.producto",
+              "nativeQueryRef": "producto"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fStock"
+                        }
+                      },
+                      "Property": "variacion"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fStock.variacion)",
+              "nativeQueryRef": "Suma de variacion"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fStock"
+                  }
+                },
+                "Property": "fecha"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

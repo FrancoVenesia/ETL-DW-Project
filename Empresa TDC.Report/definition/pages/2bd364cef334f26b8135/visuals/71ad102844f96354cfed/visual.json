@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "71ad102844f96354cfed",
+  "position": {
+    "x": 500,
+    "y": 0,
+    "z": 2000,
+    "height": 280,
+    "width": 280,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Cantidad de vendedores"
+                }
+              },
+              "queryRef": "fVenta.Cantidad de vendedores",
+              "nativeQueryRef": "Cantidad de vendedores"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fVenta"
+                  }
+                },
+                "Property": "Cantidad de vendedores"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

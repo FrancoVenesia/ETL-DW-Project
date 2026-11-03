@@ -1,0 +1,94 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "0600542d923b06f842f5",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 2000,
+    "height": 151.66666666666669,
+    "width": 546.66666666666674,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dProducto"
+                    }
+                  },
+                  "Property": "rubro"
+                }
+              },
+              "queryRef": "dProducto.rubro",
+              "nativeQueryRef": "rubro",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dGeografia"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "dGeografia.region",
+              "nativeQueryRef": "region",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "NativeVisualCalculation": {
+                  "Language": "dax",
+                  "Expression": "IF(ISATLEVEL([region]), [Litros vendidos_Base], BLANK())",
+                  "Name": "Litros vendidos"
+                },
+                "Annotations": {
+                  "customTotalMetadata": {
+                    "baseQueryName": "fVenta.Litros vendidos"
+                  }
+                }
+              },
+              "queryRef": "select",
+              "nativeQueryRef": "Litros vendidos"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Litros vendidos"
+                }
+              },
+              "queryRef": "fVenta.Litros vendidos",
+              "nativeQueryRef": "Litros vendidos_Base",
+              "hidden": true,
+              "displayName": "Litros vendidos_Base"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

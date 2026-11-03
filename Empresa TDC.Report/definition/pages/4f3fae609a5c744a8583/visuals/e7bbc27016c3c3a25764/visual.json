@@ -1,0 +1,108 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "e7bbc27016c3c3a25764",
+  "position": {
+    "x": 0,
+    "y": 151.66666666666669,
+    "z": 1000,
+    "height": 233.33333333333334,
+    "width": 655,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dGeografia"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "dGeografia.region",
+              "nativeQueryRef": "region",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dGeografia"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "dGeografia.region",
+              "nativeQueryRef": "region"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Monto total vendido"
+                }
+              },
+              "queryRef": "fVenta.Monto total vendido",
+              "nativeQueryRef": "Monto total vendido"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fVenta"
+                  }
+                },
+                "Property": "Monto total vendido"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Monto vendido por region'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

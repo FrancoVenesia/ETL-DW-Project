@@ -1,0 +1,142 @@
+table dTiempo
+	lineageTag: c19cf663-b129-4e15-82d7-8be6303ea17c
+	dataCategory: Time
+
+	column fecha
+		dataType: dateTime
+		isKey
+		formatString: yyyy-mm-dd
+		lineageTag: dd2bfc46-a069-4447-aa04-7a93196bebf1
+		summarizeBy: none
+		sourceColumn: fecha
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column dia
+		dataType: int64
+		formatString: 0
+		lineageTag: 8be01d54-c5a8-4b7c-a51b-9460a01cadb0
+		summarizeBy: sum
+		sourceColumn: dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 66fdf61f-8af3-48ff-8da9-b080d3e55272
+		summarizeBy: sum
+		sourceColumn: mes
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column trimestre
+		dataType: int64
+		formatString: 0
+		lineageTag: 4d76477f-3216-43bc-a479-3cabbd1a5bc7
+		summarizeBy: sum
+		sourceColumn: trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column semestre
+		dataType: int64
+		formatString: 0
+		lineageTag: 1f1eca9e-7679-4742-8f1f-04182545b43c
+		summarizeBy: sum
+		sourceColumn: semestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column anio
+		dataType: int64
+		formatString: 0
+		lineageTag: fd9bf323-4b36-483a-8de2-fd97deb115f0
+		summarizeBy: sum
+		sourceColumn: anio
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia_semana
+		dataType: int64
+		formatString: 0
+		lineageTag: 55ebf58e-a3ba-41b0-8616-43d79304b737
+		summarizeBy: sum
+		sourceColumn: dia_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_dia_semana
+		dataType: string
+		lineageTag: 033dcb8f-2463-471f-b45c-ac42750db8c6
+		summarizeBy: none
+		sourceColumn: nombre_dia_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_mes
+		dataType: string
+		lineageTag: 1c436003-1c8a-491e-83db-9ea09ee8ab2c
+		summarizeBy: none
+		sourceColumn: nombre_mes
+		sortByColumn: mes
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column es_feriado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: eb7f5237-58dc-4aef-88c1-8f8e0909818c
+		summarizeBy: none
+		sourceColumn: es_feriado
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_feriado
+		dataType: string
+		lineageTag: 8b45a493-4838-4f79-9ecf-a03ec5d9751c
+		summarizeBy: none
+		sourceColumn: nombre_feriado
+
+		annotation SummarizationSetBy = Automatic
+
+	column semana
+		dataType: int64
+		formatString: 0
+		lineageTag: ab0d1c84-b1b1-40f2-bf24-5dfbfc676ae7
+		summarizeBy: sum
+		sourceColumn: semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia_anio
+		dataType: int64
+		formatString: 0
+		lineageTag: e8b9f777-ec1e-43a7-ab83-c82bf719f142
+		summarizeBy: sum
+		sourceColumn: dia_anio
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dTiempo = m
+		mode: import
+		source =
+				let
+				    Origen = Sql.Databases(".\SQLEXPRESS"),
+				    DW_TDC = Origen{[Name="DW_TDC"]}[Data],
+				    dbo_dTiempo = DW_TDC{[Schema="dbo",Item="dTiempo"]}[Data]
+				in
+				    dbo_dTiempo
+
+	annotation PBI_ResultType = Table
+

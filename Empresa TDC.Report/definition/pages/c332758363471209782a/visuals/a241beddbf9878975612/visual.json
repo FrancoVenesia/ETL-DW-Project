@@ -1,0 +1,213 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "a241beddbf9878975612",
+  "position": {
+    "x": 448.33333333333337,
+    "y": 258.33333333333337,
+    "z": 2000,
+    "height": 461.66666666666669,
+    "width": 463.33333333333337,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dTiempo"
+                    }
+                  },
+                  "Property": "fecha"
+                }
+              },
+              "queryRef": "dTiempo.fecha",
+              "nativeQueryRef": "fecha",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dCliente"
+                    }
+                  },
+                  "Property": "nombre_completo"
+                }
+              },
+              "queryRef": "dCliente.nombre_completo",
+              "nativeQueryRef": "nombre_completo"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Monto acumulado vendido"
+                }
+              },
+              "queryRef": "fVenta.Monto acumulado",
+              "nativeQueryRef": "Monto acumulado vendido"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dTiempo"
+                  }
+                },
+                "Property": "fecha"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top 5 Clientes en el Tiempo'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ad216d22336c2e040e1c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dCliente"
+              }
+            },
+            "Property": "nombre_completo"
+          }
+        },
+        "type": "TopN",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "subquery",
+              "Expression": {
+                "Subquery": {
+                  "Query": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "d1",
+                        "Entity": "dCliente",
+                        "Type": 0
+                      },
+                      {
+                        "Name": "f",
+                        "Entity": "fVenta",
+                        "Type": 0
+                      }
+                    ],
+                    "Select": [
+                      {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "d1"
+                            }
+                          },
+                          "Property": "nombre_completo"
+                        },
+                        "Name": "field"
+                      }
+                    ],
+                    "OrderBy": [
+                      {
+                        "Direction": 2,
+                        "Expression": {
+                          "Measure": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "f"
+                              }
+                            },
+                            "Property": "Monto total vendido"
+                          }
+                        }
+                      }
+                    ],
+                    "Top": 5
+                  }
+                }
+              },
+              "Type": 2
+            },
+            {
+              "Name": "d1",
+              "Entity": "dCliente",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d1"
+                          }
+                        },
+                        "Property": "nombre_completo"
+                      }
+                    }
+                  ],
+                  "Table": {
+                    "SourceRef": {
+                      "Source": "subquery"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,308 @@
+table fVenta
+	lineageTag: 93b901ca-1231-4651-b65a-e0ea97e6ab63
+
+	measure 'Monto total vendido' = SUM(fVenta[monto_final])
+		lineageTag: 6bcf11a0-7ecf-40f4-a1ab-68ddd024e74b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Litros vendidos' = ```
+			SUM(fVenta[litros_vendidos])
+			
+			```
+		lineageTag: 2fb24656-a201-4d81-b481-42dfe93923f5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cantidad de clientes' = ```
+			DISTINCTCOUNT(fVenta[id_cliente])
+			
+			```
+		formatString: 0
+		lineageTag: 3f2477d8-0231-4b10-999b-5bfc1a42cd3c
+
+	measure 'Productos vendidos' = ```
+			SUM(fVenta[cantidad])
+			
+			```
+		formatString: 0
+		lineageTag: f9e75e59-62c8-420e-8cca-fec372494eca
+
+	measure 'Litros promedio por cliente' =
+			
+			DIVIDE(
+			    [Litros vendidos],
+			    [Cantidad de clientes]
+			)
+		lineageTag: a691968c-5701-4a3f-a2dd-b41f3eaaf039
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Monto acumulado vendido' =
+			
+			CALCULATE(
+			    [Monto total vendido],
+			    FILTER(
+			        ALLSELECTED(dTiempo[fecha]),
+			        dTiempo[fecha] <= MAX(dTiempo[fecha])
+			    )
+			)
+		lineageTag: 7252b88f-fa92-4a0f-8c3c-da3adb978d0d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cantidad de vendedores' = DISTINCTCOUNT(fVenta[id_empleado])
+		formatString: 0
+		lineageTag: a0522bdf-911e-4299-a9c2-c42bd71a72c8
+
+	measure 'Acumulado Pareto' =
+			
+			VAR TotalActual = [Monto total vendido]
+			RETURN
+			CALCULATE(
+			    [Monto total vendido],
+			    FILTER(
+			        ALLSELECTED(dCliente[nombre_completo]),
+			        [Monto total vendido] >= TotalActual
+			    )
+			)
+		lineageTag: e037f0cb-5308-4662-bfde-b4fd83c648d7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Porcentaje Pareto' =
+			
+			DIVIDE(
+			    [Acumulado Pareto],
+			    CALCULATE(
+			        [Monto total vendido],
+			        ALLSELECTED(dCliente[nombre_completo])
+			    )
+			)
+		lineageTag: 59b7d7a7-2d38-4fa4-9723-e810633c1f6a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column id_venta
+		dataType: int64
+		formatString: 0
+		lineageTag: 2fed2b0b-92f7-4cec-aafc-62a1daefe986
+		summarizeBy: sum
+		sourceColumn: id_venta
+
+		annotation SummarizationSetBy = Automatic
+
+	column version_sistema
+		dataType: int64
+		formatString: 0
+		lineageTag: 61260b22-934f-4b7a-a546-f990cf413c48
+		summarizeBy: sum
+		sourceColumn: version_sistema
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_venta_sistema
+		dataType: int64
+		formatString: 0
+		lineageTag: a21b64b6-0609-4d25-8607-56d7971ac1bb
+		summarizeBy: sum
+		sourceColumn: id_venta_sistema
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fa2bb68d-f3e2-4366-8d40-a44134038893
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id_cliente
+		dataType: int64
+		formatString: 0
+		lineageTag: 4754217b-aefc-4eb3-aa3a-498682b96325
+		summarizeBy: none
+		sourceColumn: id_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_empleado
+		dataType: int64
+		formatString: 0
+		lineageTag: 59495cc4-89ae-4e8a-a512-89702081b84f
+		summarizeBy: none
+		sourceColumn: id_empleado
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_producto
+		dataType: int64
+		formatString: 0
+		lineageTag: 4dea1755-6c88-48cb-b297-411d9e267cd6
+		summarizeBy: none
+		sourceColumn: id_producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column zipcode
+		dataType: string
+		lineageTag: df8f1509-d30d-4d4d-abc6-dbeeb24681d9
+		summarizeBy: none
+		sourceColumn: zipcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column nro_factura
+		dataType: string
+		lineageTag: 45ebae51-cf96-41cf-94c1-c81b7eb2396d
+		summarizeBy: none
+		sourceColumn: nro_factura
+
+		annotation SummarizationSetBy = Automatic
+
+	column cantidad
+		dataType: int64
+		formatString: 0
+		lineageTag: d606a16c-c0c4-46c6-b74d-57ccc1dcd044
+		summarizeBy: sum
+		sourceColumn: cantidad
+
+		annotation SummarizationSetBy = Automatic
+
+	column litros_vendidos
+		dataType: double
+		lineageTag: e88c66ea-7040-48e5-9da5-76d00c9ae4ee
+		summarizeBy: sum
+		sourceColumn: litros_vendidos
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column precio_unitario
+		dataType: double
+		lineageTag: 50989714-8063-4d25-a11c-b8f8a172a9ce
+		summarizeBy: sum
+		sourceColumn: precio_unitario
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column monto_base
+		dataType: double
+		lineageTag: 34286830-9ea2-4460-aea0-1bc27a60353b
+		summarizeBy: sum
+		sourceColumn: monto_base
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column porcentaje_descuento
+		dataType: double
+		lineageTag: 7bb91096-f137-42d0-ba56-716ac715a82b
+		summarizeBy: sum
+		sourceColumn: porcentaje_descuento
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column monto_descuento
+		dataType: double
+		lineageTag: 84caaa50-8381-44a1-8204-ed90e916ffc6
+		summarizeBy: sum
+		sourceColumn: monto_descuento
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column monto_final
+		dataType: double
+		lineageTag: ea305c8a-4c41-4843-96da-92a3de576da8
+		summarizeBy: sum
+		sourceColumn: monto_final
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Edad_Transaccion_Cliente = ```
+			
+			VAR _FechaNacimiento = RELATED(dCliente[fecha_nacimiento])
+			VAR _FechaTransaccion = fVenta[fecha]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_FechaNacimiento) && NOT ISBLANK(_FechaTransaccion),
+			        YEAR(_FechaTransaccion) - YEAR(_FechaNacimiento) 
+			            - IF(MONTH(_FechaTransaccion) < MONTH(_FechaNacimiento) || (MONTH(_FechaTransaccion) = MONTH(_FechaNacimiento) && DAY(_FechaTransaccion) < DAY(_FechaNacimiento)), 1, 0),
+			        BLANK()
+			    )
+			```
+		formatString: 0
+		lineageTag: 674c6940-6c2d-484b-ab27-31abb45085f7
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rango_Etario = ```
+			
+			IF(
+			    ISBLANK(fVenta[Edad_Transaccion_Cliente]), 
+			    "Otro",
+			    IF(
+			        fVenta[Edad_Transaccion_Cliente] >= 13 && fVenta[Edad_Transaccion_Cliente] <= 19, 
+			        "13-19: Adolescentes",
+			        IF(
+			            fVenta[Edad_Transaccion_Cliente] >= 40 && fVenta[Edad_Transaccion_Cliente] <= 50, 
+			            "40-50: Adultos Medios",
+			            IF(
+			                fVenta[Edad_Transaccion_Cliente] = 66, 
+			                "66: Edad Gerente", 
+			                "Otro"
+			            )
+			        )
+			    )
+			)
+			```
+		lineageTag: 596a7363-9e13-4348-8a36-92fdfacd252a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Edad_Transaccion_Empleado = ```
+			
+			VAR _FechaNacimiento = RELATED(dEmpleado[fecha_nacimiento])
+			VAR _FechaTransaccion = fVenta[fecha]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_FechaNacimiento) && NOT ISBLANK(_FechaTransaccion),
+			        YEAR(_FechaTransaccion) - YEAR(_FechaNacimiento) 
+			            - IF(MONTH(_FechaTransaccion) < MONTH(_FechaNacimiento) || (MONTH(_FechaTransaccion) = MONTH(_FechaNacimiento) && DAY(_FechaTransaccion) < DAY(_FechaNacimiento)), 1, 0),
+			        BLANK()
+			    )
+			```
+		formatString: 0
+		lineageTag: c8c1c65f-0bc0-4367-b51b-e253de8a109e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fVenta = m
+		mode: import
+		source =
+				let
+				    Origen = Sql.Databases(".\SQLEXPRESS"),
+				    DW_TDC = Origen{[Name="DW_TDC"]}[Data],
+				    dbo_fVenta = DW_TDC{[Schema="dbo",Item="fVenta"]}[Data]
+				in
+				    dbo_fVenta
+
+	annotation PBI_ResultType = Table
+

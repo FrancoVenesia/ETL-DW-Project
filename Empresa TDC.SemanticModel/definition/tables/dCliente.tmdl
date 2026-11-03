@@ -1,0 +1,66 @@
+table dCliente
+	lineageTag: b2042b96-126e-4ad6-bdb0-bef7c65c498c
+
+	column id_cliente
+		dataType: int64
+		formatString: 0
+		lineageTag: 408fff78-dc69-4d0e-8dc2-f6d93728a918
+		summarizeBy: none
+		sourceColumn: id_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column zipcode
+		dataType: string
+		lineageTag: d8c91f3d-61b8-44af-b392-d9fa10616353
+		summarizeBy: none
+		sourceColumn: zipcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_completo
+		dataType: string
+		lineageTag: 7cd89beb-3568-41a9-8b8a-b695232c1db6
+		summarizeBy: none
+		sourceColumn: nombre_completo
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_nacimiento
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d7ea99a0-30e1-4d39-9097-2b3693a9e7dd
+		summarizeBy: none
+		sourceColumn: fecha_nacimiento
+
+		variation Variación
+			isDefault
+			relationship: 76300730-98d8-4c0c-a56e-fc3c56fc1841
+			defaultHierarchy: LocalDateTable_0a112122-3612-41f8-9675-f6bfa76b2d0d.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column tipo_cliente
+		dataType: string
+		lineageTag: 42e07508-13f1-4ecf-920b-47e8b1ccabb6
+		summarizeBy: none
+		sourceColumn: tipo_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dCliente = m
+		mode: import
+		source =
+				let
+				    Origen = Sql.Databases(".\SQLEXPRESS"),
+				    DW_TDC = Origen{[Name="DW_TDC"]}[Data],
+				    dbo_dCliente = DW_TDC{[Schema="dbo",Item="dCliente"]}[Data]
+				in
+				    dbo_dCliente
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

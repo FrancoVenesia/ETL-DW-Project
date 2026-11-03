@@ -1,0 +1,47 @@
+table dGeografia
+	lineageTag: f472f7c2-098d-49b3-abc8-7a4263909f17
+
+	column zipcode
+		dataType: string
+		lineageTag: 636344d3-0267-4d29-89d6-69156bfd1da5
+		summarizeBy: none
+		sourceColumn: zipcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: e89393a5-60a1-4a8a-b15c-7e4e37839891
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 61ffc0c4-672a-487a-a103-58a5f12692db
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: da91fab0-e6a9-4ce6-8c2f-14ff06c98b0f
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dGeografia = m
+		mode: import
+		source =
+				let
+				    Origen = Sql.Databases(".\SQLEXPRESS"),
+				    DW_TDC = Origen{[Name="DW_TDC"]}[Data],
+				    dbo_dGeografia = DW_TDC{[Schema="dbo",Item="dGeografia"]}[Data]
+				in
+				    dbo_dGeografia
+
+	annotation PBI_ResultType = Table
+

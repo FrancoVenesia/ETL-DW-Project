@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "019bddbef052e85beb65",
+  "position": {
+    "x": 226.66666666666669,
+    "y": 0,
+    "z": 6000,
+    "height": 115,
+    "width": 361.66666666666669,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Monto total vendido"
+                }
+              },
+              "queryRef": "fVenta.Monto total vendido",
+              "nativeQueryRef": "Monto total vendido"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fVenta"
+                  }
+                },
+                "Property": "Monto total vendido"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

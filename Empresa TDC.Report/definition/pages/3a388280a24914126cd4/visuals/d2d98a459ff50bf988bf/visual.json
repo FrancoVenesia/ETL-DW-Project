@@ -1,0 +1,108 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "d2d98a459ff50bf988bf",
+  "position": {
+    "x": 640,
+    "y": 296.66666666666669,
+    "z": 3000,
+    "height": 213.33333333333334,
+    "width": 640,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "lineStackedColumnComboChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dTiempo"
+                    }
+                  },
+                  "Property": "fecha"
+                }
+              },
+              "queryRef": "dTiempo.fecha",
+              "nativeQueryRef": "fecha",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dProducto"
+                    }
+                  },
+                  "Property": "es_diet"
+                }
+              },
+              "queryRef": "dProducto.es_diet",
+              "nativeQueryRef": "es_diet"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Litros vendidos"
+                }
+              },
+              "queryRef": "fVenta.Litros vendidos",
+              "nativeQueryRef": "Litros vendidos"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dTiempo"
+                  }
+                },
+                "Property": "fecha"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Analisis Diet'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

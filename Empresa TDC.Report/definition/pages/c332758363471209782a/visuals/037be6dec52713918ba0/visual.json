@@ -1,0 +1,108 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "037be6dec52713918ba0",
+  "position": {
+    "x": 0,
+    "y": 346.66666666666669,
+    "z": 1000,
+    "height": 373.33333333333337,
+    "width": 458.33333333333337,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Rango_Etario"
+                }
+              },
+              "queryRef": "fVenta.Rango_Etario",
+              "nativeQueryRef": "Rango_Etario",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dProducto"
+                    }
+                  },
+                  "Property": "rubro"
+                }
+              },
+              "queryRef": "dProducto.rubro",
+              "nativeQueryRef": "rubro"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Litros vendidos"
+                }
+              },
+              "queryRef": "fVenta.Litros vendidos",
+              "nativeQueryRef": "Litros vendidos"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fVenta"
+                  }
+                },
+                "Property": "Litros vendidos"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Rubro por grupo etario'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

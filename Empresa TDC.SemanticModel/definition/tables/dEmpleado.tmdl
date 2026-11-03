@@ -1,0 +1,88 @@
+table dEmpleado
+	lineageTag: 43102e88-d5b5-4bb7-8085-913b0538ddc6
+
+	column id_empleado
+		dataType: int64
+		formatString: 0
+		lineageTag: 36574d5f-13c4-40e6-a21b-9b1ffbea3b2d
+		summarizeBy: none
+		sourceColumn: id_empleado
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_completo
+		dataType: string
+		lineageTag: 5b7f7265-aeea-47e5-bcc6-325268b63be9
+		summarizeBy: none
+		sourceColumn: nombre_completo
+
+		annotation SummarizationSetBy = Automatic
+
+	column genero
+		dataType: string
+		lineageTag: efee2a5f-74d3-475d-8fbf-f32db29fc4c7
+		summarizeBy: none
+		sourceColumn: genero
+
+		annotation SummarizationSetBy = Automatic
+
+	column categoria
+		dataType: string
+		lineageTag: 3ff78b8f-c909-442e-b6cc-99d15e72776e
+		summarizeBy: none
+		sourceColumn: categoria
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_ingreso
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e2d89513-c9ec-463e-b00a-15a63e709f81
+		summarizeBy: none
+		sourceColumn: fecha_ingreso
+
+		variation Variación
+			isDefault
+			relationship: 38eac25a-2a44-46a7-a112-f0e409513eca
+			defaultHierarchy: LocalDateTable_e91322b1-4545-40d6-980b-5d9ded4e57d5.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column fecha_nacimiento
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a6eaf123-f53e-494a-911b-d400c9ec3efb
+		summarizeBy: none
+		sourceColumn: fecha_nacimiento
+
+		variation Variación
+			isDefault
+			relationship: 1d3e9803-84a5-49f7-b7a5-f33c0dd1b7d6
+			defaultHierarchy: LocalDateTable_b7a9494b-0cdd-4088-8be1-1ca1e25739ac.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column nivel_educacion
+		dataType: string
+		lineageTag: 6ea72ba8-0dc2-46a7-95fe-fa83e199d0c9
+		summarizeBy: none
+		sourceColumn: nivel_educacion
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dEmpleado = m
+		mode: import
+		source =
+				let
+				    Origen = Sql.Databases(".\SQLEXPRESS"),
+				    DW_TDC = Origen{[Name="DW_TDC"]}[Data],
+				    dbo_dEmpleado = DW_TDC{[Schema="dbo",Item="dEmpleado"]}[Data]
+				in
+				    dbo_dEmpleado
+
+	annotation PBI_ResultType = Table
+

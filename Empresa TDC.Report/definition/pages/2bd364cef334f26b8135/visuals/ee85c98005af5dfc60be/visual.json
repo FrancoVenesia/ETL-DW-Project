@@ -1,0 +1,133 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "ee85c98005af5dfc60be",
+  "position": {
+    "x": 790.63719115734716,
+    "y": 0,
+    "z": 6000,
+    "height": 720.72821846553961,
+    "width": 479.37581274382313,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "keyDriversVisual",
+    "query": {
+      "queryState": {
+        "Details": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dEmpleado"
+                    }
+                  },
+                  "Property": "nivel_educacion"
+                }
+              },
+              "queryRef": "dEmpleado.nivel_educacion",
+              "nativeQueryRef": "nivel_educacion"
+            }
+          ]
+        },
+        "ExplainBy": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fVenta"
+                        }
+                      },
+                      "Property": "Edad_Transaccion_Empleado"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Sum(fVenta.Edad_Transaccion_Empleado)",
+              "nativeQueryRef": "Promedio de Edad_Transaccion_Empleado"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dEmpleado"
+                    }
+                  },
+                  "Property": "genero"
+                }
+              },
+              "queryRef": "dEmpleado.genero",
+              "nativeQueryRef": "genero"
+            }
+          ]
+        },
+        "Target": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Monto total vendido"
+                }
+              },
+              "queryRef": "fVenta.Monto total vendido",
+              "nativeQueryRef": "Monto total vendido"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fVenta"
+                  }
+                },
+                "Property": "Monto total vendido"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "keyDrivers": [
+        {
+          "properties": {
+            "numericTargetSelectedKind": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "selectedAnalysis": {
+              "expr": {
+                "Literal": {
+                  "Value": "'keyInfluencers'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

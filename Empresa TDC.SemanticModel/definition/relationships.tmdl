@@ -1,0 +1,64 @@
+relationship 76300730-98d8-4c0c-a56e-fc3c56fc1841
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dCliente.fecha_nacimiento
+	toColumn: LocalDateTable_0a112122-3612-41f8-9675-f6bfa76b2d0d.Date
+
+relationship 38eac25a-2a44-46a7-a112-f0e409513eca
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dEmpleado.fecha_ingreso
+	toColumn: LocalDateTable_e91322b1-4545-40d6-980b-5d9ded4e57d5.Date
+
+relationship 1d3e9803-84a5-49f7-b7a5-f33c0dd1b7d6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dEmpleado.fecha_nacimiento
+	toColumn: LocalDateTable_b7a9494b-0cdd-4088-8be1-1ca1e25739ac.Date
+
+relationship bdbd674c-d03e-45c7-86f8-a8864623e2a2
+	fromColumn: dCliente.zipcode
+	toColumn: dGeografia.zipcode
+
+	annotation PBI_IsFromSource = FS
+
+relationship 5d26da91-a2af-4c85-81cf-b7cda47cae46
+	fromColumn: fVenta.id_cliente
+	toColumn: dCliente.id_cliente
+
+	annotation PBI_IsFromSource = FS
+
+relationship fc2a4536-a1ab-4001-b5ad-d5b08cfbf68a
+	fromColumn: fVenta.id_empleado
+	toColumn: dEmpleado.id_empleado
+
+	annotation PBI_IsFromSource = FS
+
+relationship 0f8ddb29-a771-4ae2-b37e-59eefc217598
+	isActive: false
+	fromColumn: fVenta.zipcode
+	toColumn: dGeografia.zipcode
+
+	annotation PBI_IsFromSource = FS
+
+relationship 8687cc02-00fe-4fdf-acab-f0509f033e6a
+	fromColumn: fVenta.id_producto
+	toColumn: dProducto.id_producto
+
+	annotation PBI_IsFromSource = FS
+
+relationship dfe8aa8f-4cab-45a0-afb9-194217767dd7
+	fromColumn: fVenta.fecha
+	toColumn: dTiempo.fecha
+
+	annotation PBI_IsFromSource = FS
+
+relationship d553c6e6-fb2f-4c4c-adcc-d2e2172e48be
+	fromColumn: fStock.id_producto
+	toColumn: dProducto.id_producto
+
+	annotation PBI_IsFromSource = FS
+
+relationship 249a54c4-29ca-44e8-94cf-25a390bdd6dd
+	fromColumn: fStock.fecha
+	toColumn: dTiempo.fecha
+
+	annotation PBI_IsFromSource = FS
+

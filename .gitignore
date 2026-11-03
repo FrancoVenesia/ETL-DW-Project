@@ -367,3 +367,7 @@ Fuentes de Datos TP Final-20260517/Area Comercializacion/sales.sql
 
 # Archivos que agregan Windows y OneDrive en cada carpeta
 desktop.ini
+
+# Proyecto de Power BI (.pbip): cache de datos y configuracion local de cada PC
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

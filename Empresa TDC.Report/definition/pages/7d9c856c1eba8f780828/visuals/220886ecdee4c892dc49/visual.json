@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "220886ecdee4c892dc49",
+  "position": {
+    "x": 0,
+    "y": 425.61963190184048,
+    "z": 1000,
+    "height": 293.69325153374234,
+    "width": 309.39877300613495,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dCliente"
+                    }
+                  },
+                  "Property": "nombre_completo"
+                }
+              },
+              "queryRef": "dCliente.nombre_completo",
+              "nativeQueryRef": "nombre_completo",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fVenta"
+                        }
+                      },
+                      "Property": "monto_final"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fVenta.monto_final)",
+              "nativeQueryRef": "Suma de monto_final"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "fVenta"
+                      }
+                    },
+                    "Property": "monto_final"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

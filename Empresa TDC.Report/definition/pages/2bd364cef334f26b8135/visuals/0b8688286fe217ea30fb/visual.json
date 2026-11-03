@@ -1,0 +1,108 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "0b8688286fe217ea30fb",
+  "position": {
+    "x": 359.53185955786734,
+    "y": 289.62288686605979,
+    "z": 5000,
+    "height": 431.10533159947983,
+    "width": 411.13133940182053,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dEmpleado"
+                    }
+                  },
+                  "Property": "genero"
+                }
+              },
+              "queryRef": "dEmpleado.genero",
+              "nativeQueryRef": "genero",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dEmpleado"
+                    }
+                  },
+                  "Property": "genero"
+                }
+              },
+              "queryRef": "dEmpleado.genero",
+              "nativeQueryRef": "genero"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Monto total vendido"
+                }
+              },
+              "queryRef": "fVenta.Monto total vendido",
+              "nativeQueryRef": "Monto total vendido"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fVenta"
+                  }
+                },
+                "Property": "Monto total vendido"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Monto vendido por Género'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

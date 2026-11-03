@@ -1,0 +1,112 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 254,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 50,
+            "y": 145.82549875889583
+          },
+          "nodeIndex": "dEmpleado",
+          "nodeLineageTag": "43102e88-d5b5-4bb7-8085-913b0538ddc6",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 334.13546342421455,
+            "y": 372.82590802730334
+          },
+          "nodeIndex": "dGeografia",
+          "nodeLineageTag": "f472f7c2-098d-49b3-abc8-7a4263909f17",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 902.52180610881828,
+            "y": 20.272038579307377
+          },
+          "nodeIndex": "dProducto",
+          "nodeLineageTag": "2f83f77e-e9df-4473-97ae-d0a7637733e1",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 902.51649462323394,
+            "y": 334.75382432243839
+          },
+          "nodeIndex": "dTiempo",
+          "nodeLineageTag": "c19cf663-b129-4e15-82d7-8be6303ea17c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1186.7044130946185,
+            "y": 223.13884937454708
+          },
+          "nodeIndex": "fStock",
+          "nodeLineageTag": "d293737f-963b-43a3-bf58-988a969f49eb",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 618.29126248796069,
+            "y": 143.93153641325432
+          },
+          "nodeIndex": "fVenta",
+          "nodeLineageTag": "93b901ca-1231-4651-b65a-e0ea97e6ab63",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 334.12665161145253,
+            "y": -50
+          },
+          "nodeIndex": "dCliente",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 5
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}

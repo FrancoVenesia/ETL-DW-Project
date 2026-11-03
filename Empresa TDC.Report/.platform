@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Empresa TDC"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ee0afaf2-ce84-4fa3-a280-ab1225e5e3fa"
+  }
+}

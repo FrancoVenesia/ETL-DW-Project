@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Empresa TDC"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "844b7c2b-c9b8-4c89-a29d-a1d2307bb576"
+  }
+}

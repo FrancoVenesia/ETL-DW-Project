@@ -1,0 +1,64 @@
+table fStock
+	lineageTag: d293737f-963b-43a3-bf58-988a969f49eb
+
+	column id_stock
+		dataType: int64
+		formatString: 0
+		lineageTag: fc1ee200-025f-4e5d-a6d6-bc0da0cf6c89
+		summarizeBy: sum
+		sourceColumn: id_stock
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 811e603c-fca4-4dd1-970b-6c07e6c57c2e
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hora
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: 62bfd97f-eef8-4ec3-8f78-ec9e4dd25130
+		summarizeBy: none
+		sourceColumn: hora
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column id_producto
+		dataType: int64
+		formatString: 0
+		lineageTag: e43b860c-b0e4-410c-8d2e-b7a965ebecbc
+		summarizeBy: none
+		sourceColumn: id_producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column variacion
+		dataType: int64
+		formatString: 0
+		lineageTag: 9d51a955-32f5-4f52-b077-1f0b35cc6870
+		summarizeBy: sum
+		sourceColumn: variacion
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fStock = m
+		mode: import
+		source =
+				let
+				    Origen = Sql.Databases(".\SQLEXPRESS"),
+				    DW_TDC = Origen{[Name="DW_TDC"]}[Data],
+				    dbo_fStock = DW_TDC{[Schema="dbo",Item="fStock"]}[Data]
+				in
+				    dbo_fStock
+
+	annotation PBI_ResultType = Table
+

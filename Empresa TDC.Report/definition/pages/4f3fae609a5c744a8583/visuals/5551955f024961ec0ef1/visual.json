@@ -1,0 +1,108 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "5551955f024961ec0ef1",
+  "position": {
+    "x": 696.66666666666674,
+    "y": 401.66666666666669,
+    "z": 0,
+    "height": 318.33333333333337,
+    "width": 563.33333333333337,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "map",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dGeografia"
+                    }
+                  },
+                  "Property": "state"
+                }
+              },
+              "queryRef": "dGeografia.state",
+              "nativeQueryRef": "state",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dGeografia"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "dGeografia.region",
+              "nativeQueryRef": "region"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Monto total vendido"
+                }
+              },
+              "queryRef": "fVenta.Monto total vendido",
+              "nativeQueryRef": "Monto total vendido"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fVenta"
+                    }
+                  },
+                  "Property": "Litros vendidos"
+                }
+              },
+              "queryRef": "fVenta.Litros vendidos",
+              "nativeQueryRef": "Litros vendidos"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Mapa'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

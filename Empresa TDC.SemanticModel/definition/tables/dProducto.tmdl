@@ -1,0 +1,75 @@
+table dProducto
+	lineageTag: 2f83f77e-e9df-4473-97ae-d0a7637733e1
+
+	column id_producto
+		dataType: int64
+		formatString: 0
+		lineageTag: b388d328-da59-41a6-8218-f7c05eeb2065
+		summarizeBy: none
+		sourceColumn: id_producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column producto
+		dataType: string
+		lineageTag: d812a4e0-3d6c-4436-b64a-ecb451281e0e
+		summarizeBy: none
+		sourceColumn: producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column rubro
+		dataType: string
+		lineageTag: c4d64db7-5db1-4166-a38f-11aad8dbc7cd
+		summarizeBy: none
+		sourceColumn: rubro
+
+		annotation SummarizationSetBy = Automatic
+
+	column presentacion
+		dataType: string
+		lineageTag: 97da44c6-8d35-48bd-9184-1e2b46f83cfc
+		summarizeBy: none
+		sourceColumn: presentacion
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_envase
+		dataType: string
+		lineageTag: cb6dbff7-1273-4999-b3a7-983d56f59b0a
+		summarizeBy: none
+		sourceColumn: tipo_envase
+
+		annotation SummarizationSetBy = Automatic
+
+	column contenido_litros
+		dataType: double
+		lineageTag: 8919fd1f-f1ee-4e12-b63e-725518dcd49d
+		summarizeBy: sum
+		sourceColumn: contenido_litros
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column es_diet
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 8933b36a-e347-4b7a-9041-c411fcc7225b
+		summarizeBy: none
+		sourceColumn: es_diet
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dProducto = m
+		mode: import
+		source =
+				let
+				    Origen = Sql.Databases(".\SQLEXPRESS"),
+				    DW_TDC = Origen{[Name="DW_TDC"]}[Data],
+				    dbo_dProducto = DW_TDC{[Schema="dbo",Item="dProducto"]}[Data]
+				in
+				    dbo_dProducto
+
+	annotation PBI_ResultType = Table
+
