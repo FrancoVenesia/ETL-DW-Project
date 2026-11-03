@@ -11,6 +11,7 @@
   DTS:LocaleID="11274"
   DTS:ObjectName="Package_Master"
   DTS:PackageType="5"
+  DTS:ProtectionLevel="0"
   DTS:VersionBuild="354"
   DTS:VersionGUID="{29EE14BD-DD6F-4F73-941A-D2B053CF84E2}">
   <DTS:Property
@@ -28,95 +29,6 @@
           DTS:ConnectRetryCount="1"
           DTS:ConnectRetryInterval="5"
           DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=DW_TDC;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package_Master-{1D266CA7-5049-4F13-9620-B3546099B7A8}.\SQLEXPRESS.DW_TDC;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[Conexion Errores]"
-      DTS:CreationName="FLATFILE"
-      DTS:DTSID="{C8B7E1B5-2860-436B-99B6-070EA74E1F3E}"
-      DTS:ObjectName="Conexion Errores">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:Format="Delimited"
-          DTS:LocaleID="11274"
-          DTS:HeaderRowDelimiter="_x000D__x000A_"
-          DTS:RowDelimiter=""
-          DTS:TextQualifier="_x003C_none_x003E_"
-          DTS:CodePage="1252"
-          DTS:ConnectionString="C:\temp\TP_BBDD2_Jacob_Venesia\ERRORES.txt">
-          <DTS:FlatFileColumns>
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="255"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="CUSTOMER_ID"
-              DTS:DTSID="{477DA38F-AEEC-4E3D-9AD2-71318179D87A}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="255"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="FULL_NAME"
-              DTS:DTSID="{1269A34B-D7B0-4A5E-B830-66FF23AECBCE}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="255"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="BIRTH_DATE"
-              DTS:DTSID="{5D4DEF55-3328-4A78-ACBC-7ECC75F1A080}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="255"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="CITY"
-              DTS:DTSID="{D7DE98A0-E6E5-4791-879C-3F9A1E3B753B}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="255"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="STATE"
-              DTS:DTSID="{7C54BC10-899A-423A-8504-D1BF7B47A002}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="255"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="ZIPCODE"
-              DTS:DTSID="{F9AA9ABB-C53A-463C-971C-0C68DD4C0FB3}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:DataType="3"
-              DTS:TextQualified="True"
-              DTS:ObjectName="ErrorCode"
-              DTS:DTSID="{BF1E5C7B-78D0-48AF-9D36-F8F0803FCEB8}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x000D__x000A_"
-              DTS:DataType="3"
-              DTS:TextQualified="True"
-              DTS:ObjectName="ErrorColumn"
-              DTS:DTSID="{3FF2F7AA-665F-43E4-9832-71BC15CEB76E}"
-              DTS:CreationName="" />
-          </DTS:FlatFileColumns>
-        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -338,23 +250,6 @@
               DTS:DTSID="{0374FCA7-6A50-41A1-8834-CC73658D0D6C}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
-        </DTS:ConnectionManager>
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[server-tuia.database.windows.net,1433.TDChistorySales4.alumno]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{CCF9B0CB-15AD-43DF-8731-DEE9E95049E0}"
-      DTS:ObjectName="server-tuia.database.windows.net,1433.TDChistorySales4.alumno">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectRetryCount="1"
-          DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=server-tuia.database.windows.net,1433;User ID=alumno;Initial Catalog=TDChistorySales4;Provider=SQLNCLI11.1;Persist Security Info=True;Application Name=SSIS-Package_Master-{CCF9B0CB-15AD-43DF-8731-DEE9E95049E0}server-tuia.database.windows.net,1433.TDChistorySales4.alumno;Auto Translate=False;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAr8LbL3ig1UqMG2kmPO+BbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACaxRN8RrFLt2iVXRnCyTp96i2KdXtX2GxnKlWnwI+J8gAAAAAOgAAAAAIAACAAAAB5WGN+kDl6TxIiX5kVjfUT2lsG4kEdjBpYkRBxOVgMTyAAAABpHZQuJW8Ee4w6k17zaXS5KpyLbnefO4C13cN6VgP5FkAAAACZyWj7zS6aZJ7qmst3zEpuZSIYTZTDXdLcgPG4hW3cJRen/AqnVcEUOAexa3jElgqWmrrfSjjE/A+1j79f3i6E</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
