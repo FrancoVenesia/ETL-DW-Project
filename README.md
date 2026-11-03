@@ -4,6 +4,9 @@ Trabajo práctico final de Bases de Datos 2 (TUIA). Un paquete de SSIS lleva los
 operacionales a una base de staging, los transforma con vistas de SQL y los carga en un Data
 Warehouse dimensional que alimenta el tablero de Power BI.
 
+**[Ver capturas del proyecto en ejecución →](CAPTURAS.md)** (modelo del DW, paquete de SSIS y
+paneles de Power BI)
+
 ```
 Fuentes (SQL Server, MySQL, XML, XLS, TXT)
    │  SSIS: Staging Ingest
@@ -27,8 +30,10 @@ Power BI (Empresa TDC.pbix)
 | `SQL Scripts/GeneraDimensionFecha.sql` | Consulta que arma dTiempo (la misma que usa el paquete) |
 | `SQL Scripts/Busqueda de inconsistencias/` | Consultas de control y registro de inconsistencias encontradas |
 | `Fuentes de Datos TP Final-20260517/` | Archivos fuente; los respaldos de bases van comprimidos en `.zip` |
-| `Documentacion/` | Enunciado (con las credenciales de la cátedra ocultas) |
+| `Documentacion/` | Enunciado (con las credenciales de la cátedra ocultas) y capturas del proyecto |
+| `CAPTURAS.md` | Capturas del proyecto en ejecución |
 | `Empresa TDC.pbix` | Tablero de Power BI |
+| `Empresa TDC.pbip` y carpetas `Empresa TDC.Report` / `.SemanticModel` | El mismo tablero como proyecto de Power BI (modelo y reporte en texto, versionables) |
 
 ## Requisitos
 
