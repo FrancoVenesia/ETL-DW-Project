@@ -1,3 +1,6 @@
+USE STAGING_TDC;
+GO
+
 CREATE OR ALTER VIEW dbo.VW_VTA_HistorySales AS
 
 -- Las facturas con lineas rechazadas quedan registradas en VW_VTA_Rechazos

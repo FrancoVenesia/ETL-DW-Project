@@ -1,3 +1,6 @@
+USE STAGING_TDC;
+GO
+
 CREATE OR ALTER VIEW dbo.VW_VTA_HistorySales_Lineas AS
 
 WITH VentasTipadas AS (

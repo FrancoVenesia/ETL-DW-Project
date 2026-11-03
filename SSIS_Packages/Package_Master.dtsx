@@ -21,11 +21,13 @@
       DTS:CreationName="OLEDB"
       DTS:DTSID="{1D266CA7-5049-4F13-9620-B3546099B7A8}"
       DTS:ObjectName="Conexion DW (SQL Server Express)">
+      <DTS:PropertyExpression
+        DTS:Name="ServerName">@[$Package::ServidorSQL]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="1"
           DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=DW_TDC;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package_Master-{1D266CA7-5049-4F13-9620-B3546099B7A8}.\SQLEXPRESS.DW_TDC;" />
+          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=DW_TDC;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package_Master-{1D266CA7-5049-4F13-9620-B3546099B7A8}.\SQLEXPRESS.DW_TDC;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -122,11 +124,13 @@
       DTS:CreationName="OLEDB"
       DTS:DTSID="{4678D7D4-95E0-4793-9301-DB9219E7FC88}"
       DTS:ObjectName="Conexion History Sales (SQL Server Express)">
+      <DTS:PropertyExpression
+        DTS:Name="ServerName">@[$Package::ServidorSQL]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="1"
           DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TDChistorySales;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package_Master-{4678D7D4-95E0-4793-9301-DB9219E7FC88}.\SQLEXPRESS.TDChistorySales;" />
+          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TDChistorySales;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package_Master-{4678D7D4-95E0-4793-9301-DB9219E7FC88}.\SQLEXPRESS.TDChistorySales;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -134,6 +138,8 @@
       DTS:CreationName="EXCEL"
       DTS:DTSID="{5BDA52E2-D98B-4FAF-A60E-C05D099067DC}"
       DTS:ObjectName="Conexion HR_Employee (xls)">
+      <DTS:PropertyExpression
+        DTS:Name="ExcelFilePath">@[$Package::RutaFuentes] + "\\Area Recursos Humanos\\Employee.xls"</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="0"
@@ -146,6 +152,8 @@
       DTS:CreationName="EXCEL"
       DTS:DTSID="{35310F47-F375-49AC-AC45-3E1D1C758B27}"
       DTS:ObjectName="Conexion HR_Holidays (xls)">
+      <DTS:PropertyExpression
+        DTS:Name="ExcelFilePath">@[$Package::RutaFuentes] + "\\Area Recursos Humanos\\Holidays.xls"</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="0"
@@ -159,6 +167,8 @@
       DTS:Description="Conexion al archivo plano con informacion acerca de los productos"
       DTS:DTSID="{9A801BF5-961E-43BB-B27A-AAAD6D9A40EA}"
       DTS:ObjectName="Conexion Productos (txt)">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Package::RutaFuentes] + "\\Area Produccion\\Products.txt"</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Format="Delimited"
@@ -206,6 +216,8 @@
       DTS:Description="Conexion a texto plano de Regiones"
       DTS:DTSID="{09A0B572-71EB-4A33-9AF8-9E92161E939F}"
       DTS:ObjectName="Conexion Regiones (txt)">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Package::RutaFuentes] + "\\Area Comercializacion\\Regions.txt"</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Format="Delimited"
@@ -272,11 +284,13 @@
       DTS:CreationName="OLEDB"
       DTS:DTSID="{CED86DCA-C5D5-49E3-84D7-626901203B20}"
       DTS:ObjectName="Conexion Staging (SQL Server Express)">
+      <DTS:PropertyExpression
+        DTS:Name="ServerName">@[$Package::ServidorSQL]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="1"
           DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=STAGING_TDC;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package-{CED86DCA-C5D5-49E3-84D7-626901203B20}.\SQLEXPRESS.STAGING_TDC;" />
+          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=STAGING_TDC;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package-{CED86DCA-C5D5-49E3-84D7-626901203B20}.\SQLEXPRESS.STAGING_TDC;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -284,6 +298,8 @@
       DTS:CreationName="FLATFILE"
       DTS:DTSID="{E4DD712D-BAAF-4C59-B6EF-1573B747F3ED}"
       DTS:ObjectName="Conexion Stock (txt)">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Package::RutaFuentes] + "\\Area Produccion\\Stock.txt"</DTS:PropertyExpression>
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:Format="Delimited"
@@ -343,6 +359,28 @@
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:Description="Carpeta con las fuentes de datos del TP, sin barra al final"
+      DTS:DTSID="{AF95B3F0-656E-4BFC-A839-58155B488A77}"
+      DTS:ObjectName="RutaFuentes">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">C:\temp\TP_BBDD2_Jacob_Venesia\Fuentes de Datos TP Final-20260517</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:Description="Instancia de SQL Server con STAGING_TDC, DW_TDC y TDChistorySales"
+      DTS:DTSID="{30FBA253-1198-4C10-9A3C-BAF81D128D56}"
+      DTS:ObjectName="ServidorSQL">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">.\SQLEXPRESS</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
@@ -8636,7 +8674,7 @@ where [refTable].[id_empleado] = ?</property>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{1D266CA7-5049-4F13-9620-B3546099B7A8}"
-              SQLTask:SqlStatementSource="DELETE FROM fVenta; &#xA;DELETE FROM fStock;&#xA;DELETE FROM dCliente;&#xA;DELETE FROM dEmpleado;&#xA;DELETE FROM dGeografia;&#xA;DELETE FROM dProducto;&#xA;DELETE FROM dTiempo; &#xA;DELETE FROM err.ERROR_dCliente_dGeografia; &#xA;DELETE FROM err.ERROR_fVenta;&#xA;&#xA;-- Miembros desconocidos (-1) para las ventas cuyo cliente o empleado no existe&#xA;INSERT INTO dGeografia (zipcode, region, state, city) VALUES ('-1', 'Desconocido', 'Desconocido', 'Desconocido');&#xA;INSERT INTO dCliente (id_cliente, zipcode, nombre_completo, fecha_nacimiento, tipo_cliente) VALUES (-1, '-1', 'Desconocido', NULL, 'Desconocido');&#xA;INSERT INTO dEmpleado (id_empleado, nombre_completo, genero, categoria, fecha_ingreso, fecha_nacimiento, nivel_educacion) VALUES (-1, 'Desconocido', 'Desconocido', 'Desconocido', NULL, NULL, 'Desconocido');" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="-- Hechos y errores no tienen FKs que los referencien: TRUNCATE reinicia el IDENTITY de fVenta&#xA;TRUNCATE TABLE fVenta;&#xA;TRUNCATE TABLE fStock;&#xA;TRUNCATE TABLE err.ERROR_dCliente_dGeografia;&#xA;TRUNCATE TABLE err.ERROR_fVenta;&#xA;DELETE FROM dCliente;&#xA;DELETE FROM dEmpleado;&#xA;DELETE FROM dGeografia;&#xA;DELETE FROM dProducto;&#xA;DELETE FROM dTiempo;&#xA;&#xA;-- Miembros desconocidos (-1) para las ventas cuyo cliente o empleado no existe&#xA;INSERT INTO dGeografia (zipcode, region, state, city) VALUES ('-1', 'Desconocido', 'Desconocido', 'Desconocido');&#xA;INSERT INTO dCliente (id_cliente, zipcode, nombre_completo, fecha_nacimiento, tipo_cliente) VALUES (-1, '-1', 'Desconocido', NULL, 'Desconocido');&#xA;INSERT INTO dEmpleado (id_empleado, nombre_completo, genero, categoria, fecha_ingreso, fecha_nacimiento, nivel_educacion) VALUES (-1, 'Desconocido', 'Desconocido', 'Desconocido', NULL, NULL, 'Desconocido');" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -8671,6 +8709,23 @@ where [refTable].[id_empleado] = ?</property>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{1D266CA7-5049-4F13-9620-B3546099B7A8}"
               SQLTask:SqlStatementSource="INSERT INTO err.ERROR_fVenta (id_venta, version_sistema, fecha, id_cliente, id_empleado, id_producto, nro_factura, cantidad, Error_code, Error_column)&#xA;SELECT id_venta_sistema, version_sistema, fecha, id_cliente, id_empleado, id_producto, nro_factura, cantidad, Error_code, Error_column&#xA;FROM STAGING_TDC.dbo.VW_VTA_Rechazos;&#xA;&#xA;-- Motivo de las filas que registraron los lookups y conversiones del paquete&#xA;UPDATE e&#xA;SET Error_code = CASE WHEN c.id_cliente IS NULL THEN 'CLIENTE_INEXISTENTE' ELSE 'EMPLEADO_INEXISTENTE' END,&#xA;    Error_column = CASE WHEN c.id_cliente IS NULL THEN 'id_cliente' ELSE 'id_empleado' END&#xA;FROM err.ERROR_fVenta e&#xA;LEFT JOIN dCliente c ON c.id_cliente = TRY_CONVERT(INT, e.id_cliente)&#xA;WHERE e.Error_code IS NULL;&#xA;&#xA;UPDATE err.ERROR_dCliente_dGeografia&#xA;SET Error_code = CASE WHEN Error_code IS NULL THEN 'ZIPCODE_INEXISTENTE' ELSE 'FECHA_NACIMIENTO_INVALIDA' END,&#xA;    Error_column = CASE WHEN Error_code IS NULL THEN 'zipcode' ELSE 'fecha_nacimiento' END&#xA;WHERE Error_code IS NULL OR TRY_CONVERT(INT, Error_code) IS NOT NULL;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\DW Load\Registrar ejecucion"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{8612C9CB-A230-4DE4-8B01-E4F167BC56F0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Registrar ejecucion"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{1D266CA7-5049-4F13-9620-B3546099B7A8}"
+              SQLTask:SqlStatementSource="INSERT INTO etl.Ejecucion (filas_fVenta, filas_fVenta_desconocidas, monto_fVenta, filas_fStock, filas_dCliente,&#xA;    errores_fVenta, errores_dCliente)&#xA;SELECT&#xA;    (SELECT COUNT(*) FROM fVenta),&#xA;    (SELECT COUNT(*) FROM fVenta WHERE id_cliente = -1 OR id_empleado = -1),&#xA;    (SELECT SUM(monto_final) FROM fVenta),&#xA;    (SELECT COUNT(*) FROM fStock),&#xA;    (SELECT COUNT(*) FROM dCliente WHERE id_cliente &lt;&gt; -1),&#xA;    (SELECT COUNT(*) FROM err.ERROR_fVenta),&#xA;    (SELECT COUNT(*) FROM err.ERROR_dCliente_dGeografia);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -8715,6 +8770,14 @@ where [refTable].[id_empleado] = ?</property>
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 4"
           DTS:To="Package\DW Load\Registrar rechazos" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\DW Load.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{2C7D5A87-524A-41B5-AB1A-E0F3C6ED82A8}"
+          DTS:From="Package\DW Load\Registrar rechazos"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\DW Load\Registrar ejecucion" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
@@ -8737,6 +8800,14 @@ where [refTable].[id_empleado] = ?</property>
           DTS:ObjectName="Ingest Layer (STG)"
           DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
           <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="[Leer COM_Customer_R].[XMLData]">@[$Package::RutaFuentes] + "\\Area Comercializacion\\Customer_R.xml"</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="[Leer COM_Customer_R].[XMLSchemaDefinition]">@[$Package::RutaFuentes] + "\\Area Comercializacion\\Customer_R.xsd"</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="[COM_Leer Customer_W 1].[XMLData]">@[$Package::RutaFuentes] + "\\Area Comercializacion\\Customer_W.xml"</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="[COM_Leer Customer_W 1].[XMLSchemaDefinition]">@[$Package::RutaFuentes] + "\\Area Comercializacion\\Customer_W.xsd"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <pipeline
               version="1">
@@ -13988,6 +14059,10 @@ where [refTable].[id_empleado] = ?</property>
           Size="170,42"
           Id="Package\DW Load\Registrar rechazos"
           TopLeft="64.5476190476189,530" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\DW Load\Registrar ejecucion"
+          TopLeft="64.5476190476189,605" />
         <EdgeLayout
           Id="Package\DW Load.PrecedenceConstraints[Constraint]"
           TopLeft="186.708333333333,47.6124371005037">
@@ -14122,11 +14197,33 @@ where [refTable].[id_empleado] = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DW Load.PrecedenceConstraints[Constraint 5]"
+          TopLeft="149.547619047619,572">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="436,632"
-          Size="436,675"
+          PanelSize="436,707"
+          Size="436,750"
           Id="Package\DW Load"
           TopLeft="807.555555555555,95.833333333333" />
         <NodeLayout

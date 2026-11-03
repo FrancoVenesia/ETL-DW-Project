@@ -1,3 +1,6 @@
+USE STAGING_TDC;
+GO
+
 CREATE OR ALTER VIEW dbo.VW_VTA_Precios AS
 
 -- Cada precio rige desde PRICE_DATE (fecha y hora) hasta el siguiente precio del mismo producto.

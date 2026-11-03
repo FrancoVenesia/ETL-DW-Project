@@ -1,3 +1,6 @@
+USE STAGING_TDC;
+GO
+
 CREATE OR ALTER VIEW dbo.VW_COM_Regions AS
 SELECT
 	ZIPCODE as zipcode,

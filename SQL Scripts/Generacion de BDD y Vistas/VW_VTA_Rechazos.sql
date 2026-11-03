@@ -1,3 +1,6 @@
+USE STAGING_TDC;
+GO
+
 CREATE OR ALTER VIEW dbo.VW_VTA_Rechazos AS
 
 -- Lineas que no llegan a fVenta por falta de cabecera de factura, de producto o de precio vigente.

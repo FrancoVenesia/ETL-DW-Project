@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Respaldos de las fuentes: se versionan solo comprimidos (.zip)
+*.bak
+Fuentes de Datos TP Final-20260517/Area Comercializacion/sales.sql
+
+# Archivos que agregan Windows y OneDrive en cada carpeta
+desktop.ini

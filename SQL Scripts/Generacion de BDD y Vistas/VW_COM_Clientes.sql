@@ -1,3 +1,6 @@
+USE STAGING_TDC;
+GO
+
 CREATE OR ALTER VIEW dbo.VW_COM_Clientes AS
 
 -- Los XML traen los zipcodes sin el cero inicial (6550 en vez de 06550)
