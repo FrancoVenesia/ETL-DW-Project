@@ -5,6 +5,7 @@ WITH LineasVenta AS (
         TRY_CONVERT(INT, bd.BILLING_ID) AS id_venta_sistema,
         TRY_CONVERT(VARCHAR(255), bd.BILLING_ID) AS nro_factura,
         TRY_CONVERT(DATE, b.BILLING_DATE) AS fecha,
+        TRY_CONVERT(DATETIME2(0), b.BILLING_DATE) AS fecha_hora,
         TRY_CONVERT(INT, b.CUSTOMER_ID) AS id_cliente,
         TRY_CONVERT(INT, b.EMPLOYEE_ID) AS id_empleado,
         TRY_CONVERT(INT, bd.PRODUCT_ID) AS id_producto,
@@ -19,16 +20,12 @@ WITH LineasVenta AS (
 LineasConPrecio AS (
     SELECT
         lv.*,
-        TRY_CONVERT(DECIMAL(12,2), pr.PRICE) AS precio_unitario
+        p.precio AS precio_unitario
     FROM LineasVenta lv
-    OUTER APPLY (
-        SELECT TOP 1
-            p.PRICE
-        FROM STAGING_TDC.dbo.STG_VTA_MySQL_Prices p
-        WHERE TRY_CONVERT(INT, p.PRODUCT_ID) = lv.id_producto
-          AND TRY_CONVERT(DATE, p.PRICE_DATE) <= lv.fecha
-        ORDER BY TRY_CONVERT(DATE, p.PRICE_DATE) DESC
-    ) pr
+    LEFT JOIN dbo.VW_VTA_Precios p
+        ON p.id_producto = lv.id_producto
+       AND lv.fecha_hora >= p.vigente_desde
+       AND (p.vigente_hasta IS NULL OR lv.fecha_hora < p.vigente_hasta)
 ),
 
 LineasConMotivo AS (

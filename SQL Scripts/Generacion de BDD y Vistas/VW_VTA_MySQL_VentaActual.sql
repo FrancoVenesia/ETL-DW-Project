@@ -1,28 +1,14 @@
 CREATE OR ALTER VIEW dbo.VW_VTA_MySQL_VentaActual AS
 
--- Los XML traen los zipcodes sin el cero inicial (6550 en vez de 06550)
-WITH Clientes AS (
-    SELECT
-        TRY_CONVERT(INT, CUSTOMER_ID) AS id_cliente,
-        CAST(RIGHT('00000' + LTRIM(RTRIM(ZIPCODE)), 5) AS VARCHAR(255)) AS zipcode
-    FROM STAGING_TDC.dbo.STG_COM_Customer_Retail
-
-    UNION ALL
-
-    SELECT
-        TRY_CONVERT(INT, CUSTOMER_ID) AS id_cliente,
-        CAST(RIGHT('00000' + LTRIM(RTRIM(ZIPCODE)), 5) AS VARCHAR(255)) AS zipcode
-    FROM STAGING_TDC.dbo.STG_COM_Customer_Wholesale
-),
-
 -- Las facturas con lineas rechazadas quedan registradas en VW_VTA_Rechazos
-LineasConProductoCliente AS (
+WITH LineasConProductoCliente AS (
     SELECT
         lp.*,
         c.zipcode,
         prod.CM3
     FROM dbo.VW_VTA_MySQL_Lineas lp
-    LEFT JOIN Clientes c
+    -- HASH: sin la pista el optimizador recorre los clientes por cada linea
+    LEFT HASH JOIN dbo.VW_COM_Clientes c
         ON lp.id_cliente = c.id_cliente
     INNER JOIN dbo.VW_PRD_Products prod
         ON lp.id_producto = prod.PRODUCT_ID
@@ -61,10 +47,11 @@ SELECT
 
     ISNULL(d.PERCENTAGE, 0) AS porcentaje_descuento,
 
-    monto_base * (ISNULL(d.PERCENTAGE, 0) / 100.0) AS monto_descuento,
+    -- Redondeo explicito: al guardar en DECIMAL(12,2) SSIS trunca en vez de redondear
+    ROUND(monto_base * (ISNULL(d.PERCENTAGE, 0) / 100.0), 2) AS monto_descuento,
 
-    monto_base - (
-        monto_base * (ISNULL(d.PERCENTAGE, 0) / 100.0)
+    monto_base - ROUND(
+        monto_base * (ISNULL(d.PERCENTAGE, 0) / 100.0), 2
     ) AS monto_final
 
 FROM FacturasConTotal ft
@@ -74,10 +61,10 @@ OUTER APPLY (
         TRY_CONVERT(DECIMAL(5,2), dis.PERCENTAGE) AS PERCENTAGE
     FROM STAGING_TDC.dbo.STG_VTA_MySQL_Discounts dis
     WHERE ft.total_factura >= TRY_CONVERT(DECIMAL(12,2), dis.TOTAL_BILLING)
-      AND ft.fecha >= TRY_CONVERT(DATE, dis.DATE_FROM)
+      AND ft.fecha_hora >= TRY_CONVERT(DATETIME2(0), dis.DATE_FROM)
       AND (
             dis.DATE_UNTIL IS NULL
-            OR ft.fecha <= TRY_CONVERT(DATE, dis.DATE_UNTIL)
+            OR ft.fecha_hora <= TRY_CONVERT(DATETIME2(0), dis.DATE_UNTIL)
           )
     ORDER BY TRY_CONVERT(DECIMAL(5,2), dis.PERCENTAGE) DESC
 ) d;

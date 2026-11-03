@@ -35,15 +35,17 @@ SELECT
 
     ISNULL(d.PERCENTAGE, 0) AS porcentaje_descuento,
 
-    vt.monto_base_item * (ISNULL(d.PERCENTAGE, 0) / 100.0) AS monto_descuento,
+    -- Redondeo explicito: al guardar en DECIMAL(12,2) SSIS trunca en vez de redondear
+    ROUND(vt.monto_base_item * (ISNULL(d.PERCENTAGE, 0) / 100.0), 2) AS monto_descuento,
 
-    vt.monto_base_item - (
-        vt.monto_base_item * (ISNULL(d.PERCENTAGE, 0) / 100.0)
+    vt.monto_base_item - ROUND(
+        vt.monto_base_item * (ISNULL(d.PERCENTAGE, 0) / 100.0), 2
     ) AS monto_final
 
 FROM VentaConTotal vt
 
-LEFT JOIN DW_TDC.dbo.dCliente c
+-- HASH: sin la pista el optimizador recorre los clientes por cada linea (43 s contra 6 s)
+LEFT HASH JOIN dbo.VW_COM_Clientes c
     ON vt.id_cliente = c.id_cliente
 
 INNER JOIN dbo.VW_PRD_Products prod
@@ -54,10 +56,10 @@ OUTER APPLY (
         TRY_CONVERT(DECIMAL(5,2), d.PERCENTAGE) AS PERCENTAGE
     FROM STAGING_TDC.dbo.STG_VTA_MySQL_Discounts d
     WHERE vt.total_factura >= TRY_CONVERT(DECIMAL(12,2), d.TOTAL_BILLING)
-      AND vt.fecha >= TRY_CONVERT(DATE, d.DATE_FROM)
+      AND vt.fecha_hora >= TRY_CONVERT(DATETIME2(0), d.DATE_FROM)
       AND (
             d.DATE_UNTIL IS NULL
-            OR vt.fecha <= TRY_CONVERT(DATE, d.DATE_UNTIL)
+            OR vt.fecha_hora <= TRY_CONVERT(DATETIME2(0), d.DATE_UNTIL)
           )
     ORDER BY TRY_CONVERT(DECIMAL(5,2), d.PERCENTAGE) DESC
 ) d;

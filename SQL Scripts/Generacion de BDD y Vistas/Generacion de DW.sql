@@ -109,17 +109,24 @@ CREATE TABLE fStock (
         FOREIGN KEY (id_producto) REFERENCES dProducto(id_producto)
 );
 
-CREATE TABLE ERROR_dCliente_dGeografia (
-    id_cliente INTEGER PRIMARY KEY,
+GO
+
+-- Tablas de error: sin PK (un registro puede fallar mas de una vez) y con fecha de carga
+CREATE SCHEMA err;
+GO
+
+CREATE TABLE err.ERROR_dCliente_dGeografia (
+    id_cliente INTEGER,
     nombre_completo VARCHAR(255),
     fecha_nacimiento VARCHAR(255),
     tipo_cliente VARCHAR(255),
     zipcode VARCHAR(255),
     Error_code VARCHAR(255),
-    Error_column VARCHAR(255)
+    Error_column VARCHAR(255),
+    fecha_carga DATETIME DEFAULT GETDATE()
 );
 
-CREATE TABLE ERROR_fVenta (
+CREATE TABLE err.ERROR_fVenta (
     id_venta VARCHAR(255),
     fecha VARCHAR(255),
     id_cliente VARCHAR(255),
@@ -135,5 +142,7 @@ CREATE TABLE ERROR_fVenta (
     monto_descuento VARCHAR(255),
     monto_final VARCHAR(255),
     Error_code VARCHAR(255),
-    Error_column VARCHAR(255)
+    Error_column VARCHAR(255),
+    version_sistema VARCHAR(255),
+    fecha_carga DATETIME DEFAULT GETDATE()
 );

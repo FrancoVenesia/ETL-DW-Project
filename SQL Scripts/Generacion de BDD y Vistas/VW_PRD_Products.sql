@@ -5,6 +5,8 @@ SELECT
     DETAIL AS producto,
 
     CASE
+        -- Root Beer y Birch Beer son gaseosas sin alcohol
+        WHEN DETAIL LIKE '%Root Beer%' OR DETAIL LIKE '%Birch Beer%' THEN 'SODA'
         WHEN DETAIL LIKE '%Beer%' THEN 'BEER'
         WHEN DETAIL LIKE '%Cola%' THEN 'COLA'
         WHEN LOWER(DETAIL) LIKE '%energy drink%' THEN 'ENERGY_DRINK'
