@@ -26,8 +26,9 @@ SELECT
     vt.id_cliente,
     vt.id_empleado,
     vt.id_producto,
-    c.zipcode,
-    vt.nro_factura,
+    -- Dentro de las vistas van angostas (menos memoria al ordenar); el paquete espera VARCHAR(255)
+    CAST(vt.zipcode AS VARCHAR(255)) AS zipcode,
+    CAST(vt.nro_factura AS VARCHAR(255)) AS nro_factura,
     vt.cantidad,
 
     TRY_CONVERT(DECIMAL(12,3), vt.cantidad) *
@@ -46,10 +47,6 @@ SELECT
     ) AS monto_final
 
 FROM VentaConTotal vt
-
--- HASH: sin la pista el optimizador recorre los clientes por cada linea (43 s contra 6 s)
-LEFT HASH JOIN dbo.VW_COM_Clientes c
-    ON vt.id_cliente = c.id_cliente
 
 INNER JOIN dbo.VW_PRD_Products prod
     ON vt.id_producto = prod.PRODUCT_ID

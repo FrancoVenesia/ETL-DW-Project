@@ -7,12 +7,8 @@ CREATE OR ALTER VIEW dbo.VW_VTA_MySQL_VentaActual AS
 WITH LineasConProductoCliente AS (
     SELECT
         lp.*,
-        c.zipcode,
         prod.CM3
     FROM dbo.VW_VTA_MySQL_Lineas lp
-    -- HASH: sin la pista el optimizador recorre los clientes por cada linea
-    LEFT HASH JOIN dbo.VW_COM_Clientes c
-        ON lp.id_cliente = c.id_cliente
     INNER JOIN dbo.VW_PRD_Products prod
         ON lp.id_producto = prod.PRODUCT_ID
     WHERE lp.lineas_rechazadas_factura = 0
@@ -41,8 +37,9 @@ SELECT
     id_cliente,
     id_empleado,
     id_producto,
-    zipcode,
-    nro_factura,
+    -- Dentro de las vistas van angostas (menos memoria al ordenar); el paquete espera VARCHAR(255)
+    CAST(zipcode AS VARCHAR(255)) AS zipcode,
+    CAST(nro_factura AS VARCHAR(255)) AS nro_factura,
     cantidad,
     litros_vendidos,
     precio_unitario,

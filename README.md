@@ -69,12 +69,16 @@ base y crearla de nuevo.
    `dCliente` y `dEmpleado`.
 2. *Importar dimensiones Independientes*: `dTiempo`, `dGeografia`, `dEmpleado`, `dProducto`.
 3. *Importar dimensiones Dependientes*: `dCliente` (valida el zipcode contra `dGeografia`).
-4. *Importar Hechos a DW*: `fVenta` (valida cliente y empleado) y `fStock`.
-5. *Cargar ventas con miembros desconocidos*: carga con -1 las ventas cuyo cliente o empleado no
+4. *Materializar ventas*: calcula una sola vez, y de a una, las vistas de ventas y de rechazos en
+   las tablas `TRF_VTA_HistorySales`, `TRF_VTA_MySQL_VentaActual` y `TRF_VTA_Rechazos` de staging.
+   Si el data flow abriera las vistas en paralelo, cada una reservaría memoria para ordenar y en
+   una PC con poca memoria libre se traban esperándose entre sí.
+5. *Importar Hechos a DW*: `fVenta` (valida cliente y empleado) y `fStock`.
+6. *Cargar ventas con miembros desconocidos*: carga con -1 las ventas cuyo cliente o empleado no
    existe en las dimensiones.
-6. *Registrar rechazos*: guarda en `err.ERROR_fVenta` las líneas que no llegan a `fVenta` y completa
+7. *Registrar rechazos*: guarda en `err.ERROR_fVenta` las líneas que no llegan a `fVenta` y completa
    el motivo de cada error.
-7. *Registrar ejecucion*: deja una fila con los totales de la corrida en `etl.Ejecucion`.
+8. *Registrar ejecucion*: deja una fila con los totales de la corrida en `etl.Ejecucion`.
 
 ## Reglas de limpieza y transformación
 

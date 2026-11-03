@@ -6,14 +6,19 @@ CREATE OR ALTER VIEW dbo.VW_VTA_HistorySales_Lineas AS
 WITH VentasTipadas AS (
     SELECT
         TRY_CONVERT(INT, hs.ID) AS id_venta_sistema,
-        TRY_CONVERT(VARCHAR(255), hs.BILLING_ID) AS nro_factura,
+        TRY_CONVERT(VARCHAR(20), hs.BILLING_ID) AS nro_factura,
         TRY_CONVERT(DATE, hs.SALE_DATE) AS fecha,
         TRY_CONVERT(DATETIME2(0), hs.SALE_DATE) AS fecha_hora,
         TRY_CONVERT(INT, hs.CUSTOMER_ID) AS id_cliente,
         TRY_CONVERT(INT, hs.EMPLOYEE_ID) AS id_empleado,
         TRY_CONVERT(INT, hs.PRODUCT_ID) AS id_producto,
-        TRY_CONVERT(INT, hs.QUANTITY) AS cantidad
+        TRY_CONVERT(INT, hs.QUANTITY) AS cantidad,
+        c.zipcode
     FROM STAGING_TDC.dbo.STG_VTA_HistorySales hs
+    -- El cliente se busca aca, sobre las filas de staging: despues de las funciones de ventana
+    -- el optimizador elige recorrer los clientes por cada linea
+    LEFT JOIN dbo.VW_COM_Clientes c
+        ON c.id_cliente = TRY_CONVERT(INT, hs.CUSTOMER_ID)
 ),
 
 VentaConPrecio AS (

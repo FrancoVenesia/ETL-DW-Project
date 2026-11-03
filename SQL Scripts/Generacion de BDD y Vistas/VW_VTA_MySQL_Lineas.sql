@@ -6,18 +6,23 @@ CREATE OR ALTER VIEW dbo.VW_VTA_MySQL_Lineas AS
 WITH LineasVenta AS (
     SELECT
         TRY_CONVERT(INT, bd.BILLING_ID) AS id_venta_sistema,
-        TRY_CONVERT(VARCHAR(255), bd.BILLING_ID) AS nro_factura,
+        TRY_CONVERT(VARCHAR(20), bd.BILLING_ID) AS nro_factura,
         TRY_CONVERT(DATE, b.BILLING_DATE) AS fecha,
         TRY_CONVERT(DATETIME2(0), b.BILLING_DATE) AS fecha_hora,
         TRY_CONVERT(INT, b.CUSTOMER_ID) AS id_cliente,
         TRY_CONVERT(INT, b.EMPLOYEE_ID) AS id_empleado,
         TRY_CONVERT(INT, bd.PRODUCT_ID) AS id_producto,
         TRY_CONVERT(INT, bd.QUANTITY) AS cantidad,
-        CASE WHEN b.BILLING_ID IS NULL THEN 0 ELSE 1 END AS tiene_cabecera
+        CASE WHEN b.BILLING_ID IS NULL THEN 0 ELSE 1 END AS tiene_cabecera,
+        c.zipcode
     FROM STAGING_TDC.dbo.STG_VTA_MySQL_BillingDetail bd
     -- LEFT JOIN: el origen trae detalles cuya factura no existe en billing
     LEFT JOIN STAGING_TDC.dbo.STG_VTA_MySQL_Billing b
         ON b.BILLING_ID = bd.BILLING_ID
+    -- El cliente se busca aca, sobre las filas de staging: despues de las funciones de ventana
+    -- el optimizador elige recorrer los clientes por cada linea
+    LEFT JOIN dbo.VW_COM_Clientes c
+        ON c.id_cliente = TRY_CONVERT(INT, b.CUSTOMER_ID)
 ),
 
 LineasConPrecio AS (
